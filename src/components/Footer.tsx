@@ -4,9 +4,10 @@ import { Mail, Phone, MapPin, Send, HelpCircle, ArrowUp, CheckCircle, Linkedin, 
 
 interface FooterProps {
   onScrollTo: (sectionId: string) => void;
+  onSelectCategory?: (categoryId: string) => void;
 }
 
-export default function Footer({ onScrollTo }: FooterProps) {
+export default function Footer({ onScrollTo, onSelectCategory }: FooterProps) {
   // Local states for Contact inquiry submission
   const [formData, setFormData] = useState({
     name: '',
@@ -288,10 +289,13 @@ export default function Footer({ onScrollTo }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 border-t border-white/5 pt-16 mb-16 text-left">
           
           {/* Faded intro brand card */}
-          <div className="md:col-span-4 flex flex-col justify-start">
-            <span className="font-heading font-extrabold text-xl text-white tracking-tight mb-4">
-              BAJAJ <span className="font-mono text-xs uppercase text-brand-orange tracking-widest">International</span>
-            </span>
+          <div className="md:col-span-4 flex flex-col justify-start items-start">
+            <img 
+              src="/images/logo.png" 
+              alt="Bajaj International Logo" 
+              className="h-10 w-auto object-contain mb-4 brightness-0 invert opacity-90" 
+              referrerPolicy="no-referrer"
+            />
             <p className="font-sans font-light text-xs text-gray-500 leading-relaxed max-w-sm">
               Securing national lamination, bulk polymer, and adhesive supply infrastructures since 2011. Certified partner of ISO, GMP, and Eco-safe polymer initiatives.
             </p>
@@ -307,9 +311,10 @@ export default function Footer({ onScrollTo }: FooterProps) {
 
           <div className="md:col-span-2 flex flex-col space-y-3">
             <h4 className="font-heading font-bold text-xs uppercase tracking-wider text-white">Solutions catalog</h4>
-            <button onClick={() => onScrollTo('categories')} className="text-gray-500 hover:text-brand-orange font-sans text-xs transition-colors cursor-pointer text-left">Laminations</button>
-            <button onClick={() => onScrollTo('categories')} className="text-gray-500 hover:text-brand-orange font-sans text-xs transition-colors cursor-pointer text-left">Water Adhesives</button>
-            <button onClick={() => onScrollTo('businesses')} className="text-gray-500 hover:text-brand-orange font-sans text-xs transition-colors cursor-pointer text-left">Applications</button>
+            <button onClick={() => { onSelectCategory?.('lamination'); window.scrollTo({ top: 0, behavior: 'instant' }); }} className="text-gray-500 hover:text-brand-orange font-sans text-xs transition-colors cursor-pointer text-left">Lamination Films</button>
+            <button onClick={() => { onSelectCategory?.('adhesives'); window.scrollTo({ top: 0, behavior: 'instant' }); }} className="text-gray-500 hover:text-brand-orange font-sans text-xs transition-colors cursor-pointer text-left">Water-Based Adhesives</button>
+            <button onClick={() => { onSelectCategory?.('hotmelt'); window.scrollTo({ top: 0, behavior: 'instant' }); }} className="text-gray-500 hover:text-brand-orange font-sans text-xs transition-colors cursor-pointer text-left">Hot Melt Solutions</button>
+            <button onClick={() => { onSelectCategory?.('industrial-ink'); window.scrollTo({ top: 0, behavior: 'instant' }); }} className="text-gray-500 hover:text-brand-orange font-sans text-xs transition-colors cursor-pointer text-left">Industrial Inks</button>
           </div>
 
           {/* Newsletter subscription panel */}

@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Layers, HelpCircle, Shield, Award, Landmark } from 'lucide-react';
 
 // Import our custom premium components
 import Navbar from './components/Navbar';
@@ -11,12 +10,41 @@ import Distribution from './components/Distribution';
 import Businesses from './components/Businesses';
 import Leadership from './components/Leadership';
 import IndiaMap from './components/IndiaMap';
-import Gallery from './components/Gallery';
+// import Gallery from './components/Gallery';
 import Footer from './components/Footer';
+
+// Import our 4 newly created category pages
+import LaminationFilms from './pages/LaminationFilms';
+import WaterBasedAdhesives from './pages/WaterBasedAdhesives';
+import HotMeltSolutions from './pages/HotMeltSolutions';
+import IndustrialInks from './pages/IndustrialInks';
+
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('hero');
+  
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Derive selectedCategoryId from location path
+  let selectedCategoryId: string | null = null;
+  if (location.pathname === '/lamination') selectedCategoryId = 'lamination';
+  else if (location.pathname === '/adhesives') selectedCategoryId = 'adhesives';
+  else if (location.pathname === '/hotmelt') selectedCategoryId = 'hotmelt';
+  else if (location.pathname === '/industrial-ink') selectedCategoryId = 'industrial-ink';
+
+  console.log("App Render - Path:", location.pathname, "Selected ID:", selectedCategoryId);
+
+  const setSelectedCategoryId = (id: string | null) => {
+    console.log("setSelectedCategoryId invoked with:", id);
+    if (id) {
+      navigate('/' + id);
+    } else {
+      navigate('/');
+    }
+  };
 
   // 1. Simulate premium custom loading screen
   useEffect(() => {
@@ -36,9 +64,16 @@ export default function App() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  // Scroll to top immediately when a category page is opened/closed
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+  }, [selectedCategoryId]);
+
   // 3. Active highlighted section tracking using standard IntersectionObserver
   useEffect(() => {
-    const sections = ['hero', 'about', 'categories', 'distribution', 'businesses', 'leadership', 'network', 'gallery', 'contact'];
+    if (selectedCategoryId) return; // Do not observe when on a dedicated page
+
+    const sections = ['hero', 'about', 'categories', 'distribution', 'businesses', 'leadership', 'network', 'contact'];
     
     const observerOptions = {
       root: null,
@@ -67,34 +102,44 @@ export default function App() {
         if (element) observer.unobserve(element);
       });
     };
-  }, [isLoading]);
+  }, [isLoading, selectedCategoryId]);
 
   // Handle smooth scroll targets
   const handleScrollTo = (sectionId: string) => {
-    const targetElement = document.getElementById(sectionId);
-    if (targetElement) {
-      // Offset by navbar height (approx 80px)
-      const offset = 76;
-      const elementPosition = targetElement.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
+    setSelectedCategoryId(null);
+    
+    // We wait for the DOM to render the home sections before scrolling
+    setTimeout(() => {
+      const targetElement = document.getElementById(sectionId);
+      if (targetElement) {
+        // Offset by navbar height (approx 80px)
+        const offset = 76;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      } else {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+    }, 120);
   };
 
   return (
     <div className="relative min-h-screen bg-white select-none cursor-glow">
-      <AnimatePresence mode="wait">
-        {isLoading ? (
-          /* PREMIUM INDUSTRIAL LOADING INTRO */
+      {/* PREMIUM INDUSTRIAL LOADING INTRO OVERLAY */}
+      <AnimatePresence>
+        {isLoading && (
           <motion.div
             key="preloader"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
+            transition={{ duration: 0.4, ease: 'easeInOut' }}
             className="fixed inset-0 z-50 bg-slate-950 flex flex-col justify-center items-center p-6 text-white text-center"
             id="global-preloader"
           >
@@ -134,35 +179,108 @@ export default function App() {
               </div>
             </div>
           </motion.div>
-        ) : (
-          /* MAIN SITE LAYOUT FLOW */
-          <motion.div
-            key="main-app"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col min-h-screen"
-          >
-            {/* 1. Header Navbar navigation bar */}
-            <Navbar onScrollTo={handleScrollTo} activeSection={activeSection} />
-
-            {/* 2. Structured Section Modules as requested */}
-            <main className="flex-1">
-              <Hero onScrollTo={handleScrollTo} />
-              <About />
-              <Categories />
-              <Distribution />
-              <Businesses />
-              <Leadership />
-              <IndiaMap />
-              <Gallery />
-            </main>
-
-            {/* 3. Inquiry Form & Footer contact details */}
-            <Footer onScrollTo={handleScrollTo} />
-          </motion.div>
         )}
       </AnimatePresence>
+
+      {/* MAIN SITE LAYOUT FLOW */}
+      <div className="flex flex-col min-h-screen">
+        {/* 1. Header Navbar navigation bar */}
+        <Navbar 
+          onScrollTo={handleScrollTo} 
+          activeSection={selectedCategoryId ? '' : activeSection} 
+          selectedCategoryId={selectedCategoryId}
+          setSelectedCategoryId={setSelectedCategoryId}
+        />
+
+        {/* 2. Structured Section Modules as requested */}
+        <main className="flex-1">
+          <AnimatePresence mode="wait">
+            <Routes location={location}>
+              <Route path="/" element={
+                <motion.div
+                  key="home-sections"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Hero onScrollTo={handleScrollTo} />
+                  <About />
+                  <Categories onSelectCategory={setSelectedCategoryId} />
+                  <Distribution />
+                  <Businesses />
+                  <Leadership />
+                  <IndiaMap />
+                  {/* <Gallery /> */}
+                </motion.div>
+              } />
+              
+              <Route path="/lamination" element={
+                <motion.div
+                  key="lamination"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <LaminationFilms 
+                    onBack={() => setSelectedCategoryId(null)} 
+                    onScrollTo={handleScrollTo} 
+                  />
+                </motion.div>
+              } />
+
+              <Route path="/adhesives" element={
+                <motion.div
+                  key="adhesives"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <WaterBasedAdhesives 
+                    onBack={() => setSelectedCategoryId(null)} 
+                    onScrollTo={handleScrollTo} 
+                  />
+                </motion.div>
+              } />
+
+              <Route path="/hotmelt" element={
+                <motion.div
+                  key="hotmelt"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <HotMeltSolutions 
+                    onBack={() => setSelectedCategoryId(null)} 
+                    onScrollTo={handleScrollTo} 
+                  />
+                </motion.div>
+              } />
+
+              <Route path="/industrial-ink" element={
+                <motion.div
+                  key="industrial-ink"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <IndustrialInks 
+                    onBack={() => setSelectedCategoryId(null)} 
+                    onScrollTo={handleScrollTo} 
+                  />
+                </motion.div>
+              } />
+            </Routes>
+          </AnimatePresence>
+        </main>
+
+        {/* 3. Inquiry Form & Footer contact details */}
+        <Footer onScrollTo={handleScrollTo} onSelectCategory={(id) => setSelectedCategoryId(id)} />
+      </div>
     </div>
   );
 }

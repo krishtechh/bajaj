@@ -4,8 +4,8 @@ import { distributorsData } from '../data';
 
 export default function Distribution() {
   return (
-    <section 
-      id="distribution" 
+    <section
+      id="distribution"
       className="py-24 sm:py-32 bg-white relative overflow-hidden"
     >
       {/* Visual background lines showing connection networks */}
@@ -13,7 +13,7 @@ export default function Distribution() {
       <div className="absolute top-[40%] right-[15%] w-72 h-72 bg-gray-50 rounded-full blur-[90px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 animate-fade-in-up">
-        
+
         {/* Title center-headed as requested */}
         <div className="text-center max-w-3xl mx-auto mb-20">
           <span className="font-heading font-bold text-xs tracking-wider uppercase text-brand-orange mb-3 block">
@@ -29,31 +29,33 @@ export default function Distribution() {
 
         {/* Alternating Channels Layout Grid */}
         <div className="flex flex-col space-y-16 lg:space-y-24 relative" id="distributions-track">
-          
+
           {distributorsData.map((distributor, idx) => {
             const isLogoLeft = idx % 2 === 0;
+            // Alternating animation entry: 
+            // idx 0, 2 (Apex, Vanguard) slide in from left to right (x: -120 to 0)
+            // idx 1 (Sterling) slides in from right to left (x: 120 to 0)
             return (
               <motion.div
                 key={distributor.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: idx % 2 === 0 ? -120 : 120, y: 15 }}
+                whileInView={{ opacity: 1, x: 0, y: 0 }}
                 viewport={{ once: true, margin: "-120px" }}
-                transition={{ duration: 0.7, delay: idx * 0.1 }}
-                className={`grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center p-8 sm:p-12 rounded-[2rem] border border-gray-100 ${
-                  idx % 2 === 0 ? 'bg-slate-50/50' : 'bg-white'
-                }`}
+                transition={{ duration: 0.85, type: "spring", stiffness: 50, damping: 15 }}
+                className={`grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center p-8 sm:p-12 rounded-[2rem] border border-gray-100 relative ${idx % 2 === 0 ? 'bg-slate-50/50' : 'bg-white'
+                  }`}
               >
                 {/* Visual Connector Node indicating current channel */}
-                <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white border-4 border-brand-orange justify-center items-center pointer-events-none shadow" style={{ top: `${(idx + 1) * 28}%` }}>
+                <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white border-4 border-brand-orange justify-center items-center pointer-events-none shadow" style={{ top: '50%', transform: 'translate(-50%, -50%)' }}>
                   <Waypoints className="w-3.5 h-3.5 text-brand-orange" />
                 </div>
 
                 {/* Left Placement: Logo / Visual Image */}
                 <div className={`col-span-1 lg:col-span-5 ${isLogoLeft ? 'lg:order-1' : 'lg:order-2'}`}>
-                  <div className="relative group overflow-hidden rounded-2xl shadow-md border border-gray-100">
+                  <div className="relative group overflow-hidden rounded-2xl shadow-md border border-gray-150">
                     {/* Glowing Accent Ring */}
                     <div className="absolute inset-0 border-2 border-transparent group-hover:border-brand-orange/40 transition-colors duration-500 rounded-2xl z-20 pointer-events-none" />
-                    
+
                     {/* Desaturated Industrial Image */}
                     <img
                       src={distributor.logo}
@@ -72,7 +74,7 @@ export default function Distribution() {
 
                 {/* Right Placement: Content Block */}
                 <div className={`col-span-1 lg:col-span-7 flex flex-col items-start ${isLogoLeft ? 'lg:order-2' : 'lg:order-1'}`}>
-                  
+
                   {/* Strategic Partner Indicator */}
                   <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-slate-100 border border-gray-200 text-xs text-slate-500 font-mono mb-4">
                     <Award className="w-4 h-4 text-brand-orange" />
@@ -82,7 +84,7 @@ export default function Distribution() {
                   <h3 className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-navy mb-4 tracking-tight">
                     {distributor.name}
                   </h3>
-                  
+
                   <p className="font-sans font-light text-gray-600 text-base leading-relaxed mb-6">
                     {distributor.description}
                   </p>
@@ -121,7 +123,7 @@ export default function Distribution() {
                   </div>
 
                   {/* Connect now CTA button */}
-                  <button
+                  {/* <button
                     onClick={() => {
                       const contactEl = document.getElementById('contact');
                       if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
@@ -131,7 +133,7 @@ export default function Distribution() {
                   >
                     <span>Connect Now</span>
                     <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                  </button>
+                  </button> */}
 
                 </div>
               </motion.div>
