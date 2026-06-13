@@ -1,0 +1,6 @@
+{
+  "name": "Bajaj International",
+  "description": "Premium corporate website for Bajaj International featuring industrial solutions, lamination films, adhesives, inks, distribution network, and an interactive India map.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
