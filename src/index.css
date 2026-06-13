@@ -97,8 +97,15 @@ body {
   animation: pulseGlow 2s infinite;
 }
 
-/* Custom cursor glow */
+/* Custom cursor glow – applied via pseudo-element so clicks pass through to content */
 .cursor-glow {
+  position: relative;
+}
+.cursor-glow::before {
+  content: '';
+  position: fixed;
+  inset: 0;
   pointer-events: none;
+  z-index: 9999;
   background: radial-gradient(600px circle at var(--x, 0px) var(--y, 0px), rgba(245, 163, 0, 0.08), transparent 40%);
 }
