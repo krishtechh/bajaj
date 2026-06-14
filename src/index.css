@@ -111,7 +111,6 @@ body {
   background: radial-gradient(600px circle at var(--x, 0px) var(--y, 0px), rgba(245, 163, 0, 0.08), transparent 40%);
 }
 
-<<<<<<< HEAD
 /* Leaflet Custom Markers */
 .marker-pin-wrapper {
   position: relative;
@@ -181,7 +180,6 @@ body {
 }
 
 
-=======
 /* Lenis smooth scrolling rules to prevent browser scroll conflicts */
 html.lenis, html.lenis body {
   height: auto;
@@ -202,4 +200,3 @@ html.lenis, html.lenis body {
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
->>>>>>> origin
