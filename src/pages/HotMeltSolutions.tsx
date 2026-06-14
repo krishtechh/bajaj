@@ -100,9 +100,6 @@ export default function HotMeltSolutions({ onBack, onScrollTo }: HotMeltSolution
 
         {/* HERO TITLE SECTION */}
         <div className="text-left max-w-3xl mb-16">
-          <span className="px-3 py-1.5 rounded-md bg-orange-50 border border-orange-200 text-orange-600 text-xs font-mono font-bold tracking-wider uppercase mb-4 inline-block">
-            Thermoplastic Technology
-          </span>
           <h1 className="font-heading font-extrabold text-4xl sm:text-5.5xl text-brand-navy uppercase tracking-tight leading-none mb-6">
             Hot Melt <span className="text-orange-500">Solutions</span>
           </h1>
@@ -139,7 +136,7 @@ export default function HotMeltSolutions({ onBack, onScrollTo }: HotMeltSolution
         </div>
 
         {/* SUB-PRODUCTS DISPLAY */}
-        <div className="mb-24">
+        <div className="mb-24 max-w-5xl mx-auto">
           
           {/* Main Content: Products list */}
           <div className="space-y-12">
@@ -177,9 +174,6 @@ export default function HotMeltSolutions({ onBack, onScrollTo }: HotMeltSolution
                       />
                       <span className="absolute top-4 right-5 z-20 font-mono text-5xl font-black text-white/20 drop-shadow-lg">
                         0{pIdx + 1}
-                      </span>
-                      <span className="absolute top-4 left-4 z-20 px-2.5 py-1 text-[10px] font-mono font-bold tracking-wider bg-black/40 backdrop-blur-md text-orange-400 uppercase rounded-md border border-orange-500/30">
-                        {product.type}
                       </span>
                     </div>
 

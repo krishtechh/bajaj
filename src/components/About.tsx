@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, useInView } from 'motion/react';
-import { HelpCircle, Layers, ShieldCheck, ChevronRight } from 'lucide-react';
+import { HelpCircle, Layers, ShieldCheck, ChevronRight, Award, Settings, Users } from 'lucide-react';
 import { statsData } from '../data';
 
 interface CounterProps {
@@ -46,35 +46,47 @@ function AnimatedCounter({ value, suffix }: CounterProps) {
 export default function About() {
   const [activeLayer, setActiveLayer] = useState<number | null>(null);
 
-  // Structural layers representing a high-performance lamination film stack
-  const engineeringLayers = [
+  // Key features representing why clients choose Bajaj International
+  const chooseUsItems = [
     {
       id: 1,
-      title: "Active UV Guard Layer",
-      desc: "Top-tier polymeric barrier that filters 99.8% of atmospheric ultraviolet rays, preventing pigment fading.",
+      title: "One-Stop Solution",
+      desc: "One-Stop Solution for Industrial Adhesives, Films and Printing Inks under one roof.",
       color: "border-brand-orange bg-amber-500/10",
-      accent: "text-brand-orange"
+      accent: "text-brand-orange",
+      icon: Layers
     },
     {
       id: 2,
-      title: "Ultra-Clear BOPP/PET Film Base",
-      desc: "High-tensile, mechanically stretched core film offering extreme puncture resistance and dimensional stability.",
-      color: "border-gray-300 bg-gray-100",
-      accent: "text-gray-600"
+      title: "Wide Portfolio of Trusted Brands",
+      desc: "Instant access to a wide range of industry-leading, global manufacturing partners.",
+      color: "border-blue-200 bg-blue-500/10",
+      accent: "text-blue-600",
+      icon: Award
     },
     {
       id: 3,
-      title: "Co-Extruded Primer Bonding Anchor",
-      desc: "Advanced molecular layer enhancing absolute adhesion grip between surface ink sets and polymer base.",
-      color: "border-blue-300 bg-blue-500/10",
-      accent: "text-blue-500"
+      title: "Assured & Reliable Supply Chain",
+      desc: "Dependable regional logistics networks ensuring prompt, scheduled daily deliveries.",
+      color: "border-emerald-200 bg-emerald-500/10",
+      accent: "text-emerald-600",
+      icon: ShieldCheck
     },
     {
       id: 4,
-      title: "Premium Copolymer Thermal Adhesive",
-      desc: "Heavy-duty hot melt adhesive formulation that melts uniformly at 105°C onto printed materials, guaranteeing zero fiber-tear or peeling.",
-      color: "border-brand-navy bg-brand-navy/10",
-      accent: "text-brand-navy"
+      title: "Competent Technical Support",
+      desc: "Direct access to expert technicians and specialists to optimize your daily production.",
+      color: "border-indigo-200 bg-indigo-500/10",
+      accent: "text-indigo-600",
+      icon: Settings
+    },
+    {
+      id: 5,
+      title: "Customer-Centric Approach",
+      desc: "Tailored commercial and technical solutions aligned with your unique business goals.",
+      color: "border-rose-200 bg-rose-500/10",
+      accent: "text-rose-600",
+      icon: Users
     }
   ];
 
@@ -92,7 +104,7 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           
           {/* LEFT COLUMN - CONTENT & STATS COUNTERS */}
-          <div className="lg:col-span-6 flex flex-col">
+          <div className="lg:col-span-6 flex flex-col text-left">
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
@@ -103,7 +115,7 @@ export default function About() {
                 ABOUT US
               </span>
               <h2 className="font-heading font-extrabold text-3xl sm:text-4.5xl leading-tight text-brand-navy mb-8 tracking-tight">
-                We are Bajaj International
+                About Bajaj International
               </h2>
             </motion.div>
 
@@ -115,14 +127,27 @@ export default function About() {
               className="space-y-6 text-gray-600 font-sans font-light leading-relaxed text-base sm:text-lg mb-12"
             >
               <p>
-                Since our inception under the visionary foresight of the Bajaj Family, we have dedicated ourselves to crafting the chemical bonds, lamination media, and specialty adhesives that fuse modern industrial products together.
+                At <strong>Bajaj International</strong>, we believe that sourcing of <strong>Industrial Packaging Adhesive, Films and Allied Products</strong> should be simple, reliable, and efficient.
               </p>
               <p>
-                We serve as the silent backbone of India's robust manufacturing sector, providing fully custom-formulated polymers. Whether it is ensuring a luxury cosmetics case retains its high-gloss barrier layer, sealing commercial shipping cases at astronomical conveyor speeds, or engineering high-performance adhesives for automotive headliners, our chemistry delivers unmatched longevity.
+                As a trusted Supply Partner, we bring a comprehensive range of products under one roof, enabling businesses to source everything they need from a single, dependable destination. We do not just supply Adhesives, Films and Inks, but we provide robust <strong>Packaging solutions</strong> with assured quality, competitive pricing, and timely delivery.
               </p>
               <p>
-                With continuous state-of-the-art testing centers, dedicated regional warehouse supply lines, and a comprehensive pan-India service network of 500+ distribution points, we bridge the gap between material research and real-world industrial throughput.
+                With <strong>2 decades</strong> of successful distribution experience behind us, we partner with leading manufacturers to bridge the gap between world-class, proven products and the businesses that rely on them for their everyday production.
               </p>
+              <p>
+                Whether you are a Printer, Converter, Quick Commerce, or a Paper Bag manufacturer, Bajaj International is the final stop to provide you the right products, technical support, and solutions to help your business.
+              </p>
+
+              <div className="pt-2">
+                <div className="inline-flex items-center space-x-2.5 px-4 py-2.5 rounded-xl bg-orange-50 border border-orange-100 text-brand-navy font-heading font-bold text-sm sm:text-base">
+                  <span className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-orange opacity-75 mr-px"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-brand-orange"></span>
+                  </span>
+                  <span>Bajaj International – Your Trusted Partner</span>
+                </div>
+              </div>
             </motion.div>
 
             {/* STATS MATRIX */}
@@ -147,7 +172,7 @@ export default function About() {
             </motion.div>
           </div>
 
-          {/* RIGHT COLUMN - INTERACTIVE LAYERED 3D FILM STACK */}
+          {/* RIGHT COLUMN - WHY CHOOSE US */}
           <div className="lg:col-span-6 flex flex-col justify-center items-center">
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
@@ -157,27 +182,27 @@ export default function About() {
               className="w-full max-w-lg p-6 bg-slate-50 rounded-3xl border border-gray-200 shadow-sm relative"
             >
               <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-brand-navy">
-                    <Layers className="w-5 h-5" />
+                <div className="flex items-center space-x-2 text-left">
+                  <div className="w-8 h-8 rounded-lg bg-orange-50 border border-orange-100 flex items-center justify-center text-brand-orange">
+                    <ShieldCheck className="w-5 h-5" />
                   </div>
-                  <span className="font-heading font-bold text-sm text-brand-navy">Interactive Product Stack</span>
+                  <span className="font-heading font-extrabold text-base text-brand-navy">Why Choose Us?</span>
                 </div>
-                <span className="font-mono text-[11px] text-gray-400">Hover layers to analyze composition</span>
               </div>
 
-              {/* Stacked isometric layered visualizer */}
-              <div className="relative flex flex-col space-y-4 py-6" id="layered-visualizer">
-                {engineeringLayers.map((layer, index) => {
+              {/* Stacked interactive choose us items */}
+              <div className="relative flex flex-col space-y-4 py-2" id="why-choose-us-stack">
+                {chooseUsItems.map((item, index) => {
                   const isActive = activeLayer === index;
+                  const IconComponent = item.icon;
                   return (
                     <motion.div
-                      key={layer.id}
+                      key={item.id}
                       onMouseEnter={() => setActiveLayer(index)}
                       onMouseLeave={() => setActiveLayer(null)}
-                      className={`relative cursor-pointer rounded-xl border p-4 transition-all duration-300 ${
+                      className={`relative cursor-pointer rounded-xl border p-4 transition-all duration-300 text-left ${
                         isActive 
-                          ? `${layer.color} shadow-lg scale-[1.03] -translate-y-1`
+                          ? `${item.color} shadow-lg scale-[1.03] -translate-y-1`
                           : 'bg-white border-gray-100 hover:border-gray-300 shadow-sm'
                       }`}
                       style={{
@@ -188,57 +213,47 @@ export default function About() {
                     >
                       {/* Connection bar */}
                       <div className={`absolute left-0 top-0 bottom-0 w-1.5 rounded-l-xl ${
-                        layer.id === 1 ? 'bg-brand-orange' : 
-                        layer.id === 2 ? 'bg-zinc-400' : 
-                        layer.id === 3 ? 'bg-blue-400' : 'bg-brand-navy'
+                        item.id === 1 ? 'bg-brand-orange' : 
+                        item.id === 2 ? 'bg-blue-500' : 
+                        item.id === 3 ? 'bg-emerald-500' : 
+                        item.id === 4 ? 'bg-indigo-600' : 'bg-rose-500'
                       }`} />
 
                       <div className="pl-3 flex justify-between items-start">
-                        <div>
-                          <h4 className={`font-heading font-bold text-sm leading-tight transition-colors duration-300 ${
-                            isActive ? layer.accent : 'text-brand-navy'
+                        <div className="flex items-start space-x-3 pr-2">
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center mt-0.5 flex-shrink-0 ${
+                            isActive ? 'bg-white/80' : 'bg-slate-50'
                           }`}>
-                            {layer.title}
-                          </h4>
-                          
-                          {/* Expanded detail */}
-                          <p className={`font-sans text-xs leading-relaxed mt-1.5 transition-all duration-300 ${
-                            isActive ? 'text-gray-700 block' : 'text-gray-400 line-clamp-1'
-                          }`}>
-                            {layer.desc}
-                          </p>
+                            <IconComponent className={`w-4 h-4 ${isActive ? item.accent : 'text-gray-500'}`} />
+                          </div>
+                          <div>
+                            <h4 className={`font-heading font-bold text-sm leading-tight transition-colors duration-300 ${
+                              isActive ? item.accent : 'text-brand-navy'
+                            }`}>
+                              {item.title}
+                            </h4>
+                            
+                            {/* Expanded detail */}
+                            <p className={`font-sans text-xs leading-relaxed mt-1.5 transition-all duration-300 ${
+                              isActive ? 'text-gray-700 block' : 'text-gray-400 line-clamp-1'
+                            }`}>
+                              {item.desc}
+                            </p>
+                          </div>
                         </div>
 
                         {/* Hover indicator icon */}
-                        <div className="text-gray-300">
+                        <div className="text-gray-300 flex-shrink-0 self-center">
                           {isActive ? (
-                            <ShieldCheck className={`w-5 h-5 ${layer.accent}`} />
+                            <ShieldCheck className={`w-5 h-5 ${item.accent}`} />
                           ) : (
-                            <HelpCircle className="w-4 h-4 text-gray-400 hover:text-brand-orange transition-colors" />
+                            <ChevronRight className="w-4 h-4 text-gray-400" />
                           )}
                         </div>
                       </div>
                     </motion.div>
                   );
                 })}
-              </div>
-
-              {/* Dynamic bottom telemetry sheet */}
-              <div className="mt-4 p-4 rounded-xl bg-white border border-gray-100 text-left">
-                <span className="font-mono text-[10px] text-gray-400 block uppercase mb-1">Testing Validation</span>
-                <p className="font-sans text-xs text-brand-navy font-semibold">
-                  {activeLayer !== null 
-                    ? `Analyzing: ${engineeringLayers[activeLayer].title}`
-                    : "Hover any layer above to read detailed analytical polymer specs."
-                  }
-                </p>
-                <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden mt-2">
-                  <motion.div 
-                    animate={{ width: activeLayer !== null ? `${(activeLayer + 1) * 25}%` : "0%" }}
-                    className="h-full bg-brand-orange rounded-full"
-                    transition={{ type: 'spring' }}
-                  />
-                </div>
               </div>
             </motion.div>
           </div>

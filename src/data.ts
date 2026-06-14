@@ -62,7 +62,7 @@ export interface GalleryItem {
 export const statsData: Stat[] = [
   { label: "Authorized Dealers", value: 500, suffix: "+" },
   { label: "Active States", value: 20, suffix: "+" },
-  { label: "Years of Excellence", value: 15, suffix: "+" },
+  { label: "Years of Excellence", value: 20, suffix: "+" },
   { label: "Industrial Clients", value: 1000, suffix: "+" }
 ];
 
