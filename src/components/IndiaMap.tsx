@@ -1,266 +1,144 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Globe2, MapPin, TrendingUp, ShieldCheck, Truck, ChevronRight } from 'lucide-react';
-import { networkStatesData, NetworkState } from '../data';
+import { useEffect, useRef } from 'react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 export default function IndiaMap() {
-  const [selectedState, setSelectedState] = useState<NetworkState>(networkStatesData[0]);
-  const [hoveredState, setHoveredState] = useState<NetworkState | null>(null);
+  const mapInstanceRef = useRef<L.Map | null>(null);
 
-  // Auto cyclic activation of nodes to simulate live updates on the dashboard if nothing is hovered
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (!hoveredState) {
-        setSelectedState((prev) => {
-          const currentIndex = networkStatesData.findIndex((s) => s.id === prev.id);
-          const nextIndex = (currentIndex + 1) % networkStatesData.length;
-          return networkStatesData[nextIndex];
-        });
+    if (mapInstanceRef.current) return;
+
+    // Centered around Europe/Middle East/Asia to show global footprint beautifully
+    const map = L.map('global-map', {
+      center: [25.0, 45.0],
+      zoom: 3,
+      minZoom: 2,
+      maxZoom: 12,
+      scrollWheelZoom: false, // disable scrolling zoom so it doesn't get in the way of page scroll
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 20
+    }).addTo(map);
+
+    mapInstanceRef.current = map;
+
+    // Coordinates representing countries and states where Bajaj operates
+    const locations = [
+      { name: 'Mumbai, India (HQ & Polymers)', lat: 19.0760, lng: 72.8777, type: 'hq', desc: 'Central Polymer Logistics Hub & Corporate Headquarters' },
+      { name: 'Pune, India (R&D Center)', lat: 18.5204, lng: 73.8567, type: 'rd', desc: 'State-of-the-art Polymer Chemistry & Adhesive Formulation Labs' },
+      { name: 'New Delhi, India (North Hub)', lat: 28.6139, lng: 77.2090, type: 'branch', desc: 'Regional Sales Office & Northern Dispatch Hub' },
+      { name: 'Chennai, India (South Hub)', lat: 13.0827, lng: 80.2707, type: 'branch', desc: 'Specialty Coatings Unit & Deepwater Port Distribution Center' },
+      { name: 'Kolkata, India (East Hub)', lat: 22.5726, lng: 88.3639, type: 'branch', desc: 'Eastern Regional Sales Center & Lamination Film Facility' },
+      { name: 'Dubai, UAE (Middle East Division)', lat: 25.2048, lng: 55.2708, type: 'global', desc: 'Middle East Distribution Hub & Trade Alliances Division' },
+      { name: 'Frankfurt, Germany (European Branch)', lat: 50.1109, lng: 8.6821, type: 'global', desc: 'European Sales, Compliance, & High-Performance Film Distribution' },
+      { name: 'Nairobi, Kenya (Africa Logistics)', lat: -1.2921, lng: 36.8219, type: 'global', desc: 'African East-Coast Distribution & Lamination Sales Hub' },
+      { name: 'Singapore (APAC Logistics Hub)', lat: 1.3521, lng: 103.8198, type: 'global', desc: 'Southeast Asian Corporate Headquarters & Telemetry Center' },
+      { name: 'Hanoi, Vietnam (APAC Division)', lat: 21.0285, lng: 105.8542, type: 'global', desc: 'Asia-Pacific Regional Supply Network & Packaging Film Center' },
+    ];
+
+    const createMarkerIcon = (type: string) => {
+      const colorClass = type === 'hq' ? 'bg-[#123B7A]' : 'bg-[#F5A300]';
+      const pulseColor = type === 'hq' ? 'rgba(18, 59, 122, 0.4)' : 'rgba(245, 163, 0, 0.4)';
+      return L.divIcon({
+        className: 'custom-div-icon',
+        html: `
+          <div class="marker-pin-wrapper">
+            <div class="marker-pulse" style="background-color: ${pulseColor};"></div>
+            <div class="marker-dot ${colorClass}"></div>
+          </div>
+        `,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+      });
+    };
+
+    locations.forEach((loc) => {
+      const marker = L.marker([loc.lat, loc.lng], {
+        icon: createMarkerIcon(loc.type)
+      }).addTo(map);
+
+      marker.bindPopup(`
+        <div class="p-2 text-slate-900 max-w-[200px]">
+          <div class="flex items-center space-x-2 mb-1">
+            <span class="w-2.5 h-2.5 rounded-full ${loc.type === 'hq' ? 'bg-[#123B7A]' : 'bg-[#F5A300]'}"></span>
+            <h4 class="font-heading font-extrabold text-[13px] text-slate-900 leading-tight">
+              ${loc.name}
+            </h4>
+          </div>
+          <p class="font-sans text-[11px] text-slate-600 leading-normal">${loc.desc}</p>
+        </div>
+      `);
+    });
+
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
       }
-    }, 4500); // cycle every 4.5s
-    return () => clearInterval(interval);
-  }, [hoveredState]);
+    };
+  }, []);
 
   return (
     <section 
       id="network" 
-      className="py-24 sm:py-32 bg-slate-950 text-white relative overflow-hidden"
+      className="py-24 sm:py-32 bg-slate-50 relative overflow-hidden"
     >
-      {/* Premium Dashboard glowing circles */}
+      {/* Background aesthetics */}
       <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[550px] h-[550px] bg-brand-orange/[0.04] rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-12 right-12 w-[350px] h-[350px] bg-brand-navy/40 rounded-full blur-[100px] pointer-events-none" />
-      {/* Tech grid overlay */}
-      <div className="absolute inset-0 grid-overlay-dark opacity-[0.03] pointer-events-none" />
+      <div className="absolute bottom-12 right-12 w-[350px] h-[350px] bg-brand-navy/[0.04] rounded-full blur-[100px] pointer-events-none" />
+      {/* Technical grid lines in brand navy color */}
+      <div className="absolute inset-0 grid-overlay-navy pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Title structure */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
-          <div className="max-w-2xl text-left">
-            <span className="font-heading font-bold text-xs tracking-wider uppercase text-brand-orange mb-3 block">
-              ENTERPRISE REACH
-            </span>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4.5xl leading-tight text-white mb-4 tracking-tight">
-              Nationwide Distribution Network
-            </h2>
-            <p className="font-sans font-light text-gray-400 text-base sm:text-lg">
-              Explore our highly automated storage hubs and logistics centers strategically linked across individual active states.
-            </p>
-          </div>
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <span className="font-heading font-bold text-xs tracking-wider uppercase text-brand-orange mb-3 block">
+            GLOBAL PRESENCE
+          </span>
+          <h2 className="font-heading font-extrabold text-3xl sm:text-4.5xl leading-tight text-brand-navy mb-4 tracking-tight">
+            Our Global Footprint
+          </h2>
+          <p className="font-sans font-light text-slate-600 text-base sm:text-lg">
+            Meticulously linking manufacturing units, R&D labs, state warehouses, and international distribution hubs across global markets.
+          </p>
+        </div>
 
-          {/* Quick global stats indicator */}
-          <div className="flex items-center space-x-2 bg-white/5 border border-white/10 px-4 py-2 rounded-xl backdrop-blur-md self-end">
-            <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse-normal" />
-            <span className="font-mono text-xs font-semibold uppercase tracking-wider text-gray-300">Live Logistics Synchronization</span>
+        {/* 1. Centered Global Stats Number Boxes at the top */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12" id="global-stats-grid">
+          <div className="p-5 rounded-2xl bg-white border border-gray-200 text-center shadow-sm">
+            <span className="font-mono text-[10px] text-brand-orange uppercase tracking-widest block mb-2 font-bold">Global Presence</span>
+            <span className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-navy block">20+ Countries</span>
+            <span className="font-sans text-[11px] text-slate-500 mt-1 block">Active International Reach</span>
+          </div>
+          <div className="p-5 rounded-2xl bg-white border border-gray-200 text-center shadow-sm">
+            <span className="font-mono text-[10px] text-brand-orange uppercase tracking-widest block mb-2 font-bold">Authorized Hubs</span>
+            <span className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-navy block">500+ Dealers</span>
+            <span className="font-sans text-[11px] text-slate-500 mt-1 block">Retail & Logistics points</span>
+          </div>
+          <div className="p-5 rounded-2xl bg-white border border-gray-200 text-center shadow-sm">
+            <span className="font-mono text-[10px] text-brand-orange uppercase tracking-widest block mb-2 font-bold">Corporate Units</span>
+            <span className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-navy block">1000+ Clients</span>
+            <span className="font-sans text-[11px] text-slate-500 mt-1 block">Across Industrial Sectors</span>
+          </div>
+          <div className="p-5 rounded-2xl bg-white border border-gray-200 text-center bg-gradient-to-br from-brand-orange/5 to-transparent shadow-sm">
+            <span className="font-mono text-[10px] text-brand-orange uppercase tracking-widest block mb-2 font-bold">Fleet Operations</span>
+            <span className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-orange block">24/7 Hours</span>
+            <span className="font-sans text-[11px] text-slate-500 mt-1 block">Uninterrupted Global Dispatch</span>
           </div>
         </div>
 
-        {/* Dynamic Dual columns Dashboard Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center" id="network-dashboard-view">
+        {/* 2. Interactive Map Container */}
+        <div className="w-full h-[400px] sm:h-[500px] md:h-[550px] lg:h-[600px] rounded-3xl overflow-hidden relative border border-gray-200 shadow-xl bg-white">
+          <div id="global-map" className="w-full h-full z-10" />
           
-          {/* LEFT: TEXT CONTROLS & LIVE STATE SPECIFICATIONS */}
-          <div className="lg:col-span-4 flex flex-col space-y-6">
-            
-            {/* 1. Global Stat Tiles Grid */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-left">
-                <span className="font-mono text-[10px] text-gray-400 uppercase tracking-widest block mb-1">State Coverage</span>
-                <span className="font-heading font-extrabold text-2xl text-brand-orange block">20+ States</span>
-                <span className="font-sans text-[11px] text-gray-500">Active Supply Wings</span>
-              </div>
-              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-left">
-                <span className="font-mono text-[10px] text-gray-400 uppercase tracking-widest block mb-1">Dealers</span>
-                <span className="font-heading font-extrabold text-2xl text-white block">500+ Hubs</span>
-                <span className="font-sans text-[11px] text-gray-500">Retail & Logistics points</span>
-              </div>
-              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-left">
-                <span className="font-mono text-[10px] text-gray-400 uppercase tracking-widest block mb-1">Corporate Clients</span>
-                <span className="font-heading font-extrabold text-2xl text-white block">1000+ Units</span>
-                <span className="font-sans text-[11px] text-gray-500">Across Packaging, Auto</span>
-              </div>
-              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 text-left bg-gradient-to-br from-brand-orange/5 to-transparent">
-                <span className="font-mono text-[10px] text-brand-orange uppercase tracking-widest block mb-1">Fleet Speed</span>
-                <span className="font-heading font-extrabold text-2xl text-brand-orange block">24/7 Hours</span>
-                <span className="font-sans text-[11px] text-gray-500">Uninterrupted Dispatch</span>
-              </div>
-            </div>
-
-            {/* 2. Interactive Live Specification Card */}
-            <div className="p-6 rounded-3xl bg-white/5 backdrop-blur-lg border border-white/10 text-left relative overflow-hidden shadow-2xl">
-              {/* Decorative top corner line */}
-              <div className="absolute top-0 right-0 w-24 h-[1px] bg-brand-orange" />
-              
-              <div className="flex items-center justify-between mb-4 pb-4 border-b border-white/10">
-                <div className="flex items-center space-x-2">
-                  <MapPin className="w-5 h-5 text-brand-orange" />
-                  <h4 className="font-heading font-extrabold text-lg tracking-tight text-white">
-                    {selectedState.name}
-                  </h4>
-                </div>
-                <span className="px-2.5 py-0.5 rounded-md font-mono text-[10px] bg-brand-orange/10 border border-brand-orange/30 text-brand-orange">
-                  {selectedState.id} REGION
-                </span>
-              </div>
-
-              {/* Dynamic telemetry specs */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-sans text-xs text-gray-400 font-light">Authorized Dealers</span>
-                  <span className="font-heading font-bold text-sm text-white">{selectedState.dealers} Distributors</span>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <span className="font-sans text-xs text-gray-400 font-light">Active Industrial Clients</span>
-                  <span className="font-heading font-bold text-sm text-white">{selectedState.clients} Factories</span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="font-sans text-xs text-gray-400 font-light">Supply Volume Growth</span>
-                  <div className="flex items-center space-x-1 text-green-400">
-                    <TrendingUp className="w-3.5 h-3.5" />
-                    <span className="font-mono text-xs font-bold leading-none">{selectedState.salesGrowth} YoY</span>
-                  </div>
-                </div>
-
-                {/* Micro logistics route tag */}
-                <div className="mt-6 p-3 rounded-xl bg-white/[0.02] border border-white/5 flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded bg-brand-orange/10 flex items-center justify-center text-brand-orange">
-                    <Truck className="w-4.5 h-4.5" />
-                  </div>
-                  <div>
-                    <span className="block font-heading font-bold text-xs text-white leading-none">Automated Telemetry</span>
-                    <span className="font-sans text-[10px] text-gray-400">Real-time GPS dispatch active</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Quick list of States for easy click trigger if on mobile */}
-            <div className="flex flex-wrap gap-2 pt-2 xl:pt-4" id="network-chip-links">
-              {networkStatesData.slice(0, 6).map((st) => (
-                <button
-                  key={st.id}
-                  onClick={() => setSelectedState(st)}
-                  className={`px-3 py-1.5 rounded-lg font-sans text-xs font-medium border transition-all duration-300 cursor-pointer ${
-                    selectedState.id === st.id 
-                      ? 'bg-brand-orange border-brand-orange text-white'
-                      : 'bg-white/5 border-white/10 text-gray-300 hover:bg-white/10'
-                  }`}
-                >
-                  {st.name}
-                </button>
-              ))}
-            </div>
-
-          </div>
-
-          {/* RIGHT: THE INTERACTIVE DIGITAL VECTOR GRAPHIC INDIA NETWORK MAP */}
-          <div className="lg:col-span-8 flex justify-center items-center relative min-h-[400px] sm:min-h-[500px] bg-white/[0.01] rounded-[2.5rem] p-4 border border-white/5">
-            
-            {/* Visual tech crosshairs */}
-            <div className="absolute top-6 left-6 font-mono text-[9px] text-gray-500 select-none">GRID REF: BJI_IN_900</div>
-            <div className="absolute bottom-6 right-6 font-mono text-[9px] text-gray-500 select-none">SYS_READY_V2.5</div>
-
-            {/* Simulated connection line drawings behind nodes */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40 z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
-              {/* Plot connections from central Maharashtra city node to regional centers */}
-              <motion.path
-                d="M 26,55 Q 28,40 30,25" // MH to Delhi
-                fill="none" 
-                stroke="#F5A300" 
-                strokeWidth="0.5" 
-                strokeDasharray="2,2"
-                animate={{ strokeDashoffset: [0, -10] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              />
-              <motion.path
-                d="M 26,55 Q 22,50 19,46" // MH to Gujarat
-                fill="none" 
-                stroke="#F5A300" 
-                strokeWidth="0.5" 
-                strokeDasharray="2,2"
-                animate={{ strokeDashoffset: [0, -10] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              />
-              <motion.path
-                d="M 26,55 Q 30,65 34,82" // MH to Tamil Nadu
-                fill="none" 
-                stroke="#F5A300" 
-                strokeWidth="0.5" 
-                strokeDasharray="2,2"
-                animate={{ strokeDashoffset: [0, -10] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              />
-              <motion.path
-                d="M 30,25 Q 40,35 58,42" // Delhi to West Bengal
-                fill="none" 
-                stroke="#123B7A" 
-                strokeWidth="0.5" 
-                strokeDasharray="4,4"
-              />
-            </svg>
-
-            {/* India Outline Representation Canvas */}
-            <div className="relative w-full max-w-[450px] aspect-[4/5] z-10" id="india-interactive-map">
-              {/* Simplistic Abstract Geographic Styling Box */}
-              <div className="absolute inset-0 border border-white/5 rounded-3xl overflow-hidden bg-slate-900/30 backdrop-blur-sm shadow-inner">
-                {/* Simulated land mass abstract grids */}
-                <div className="w-full h-full opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]" />
-              </div>
-
-              {/* India interactive capital nodes mapped dynamically */}
-              {networkStatesData.map((st) => {
-                const isActive = selectedState.id === st.id;
-                return (
-                  <button
-                    key={st.id}
-                    onClick={() => setSelectedState(st)}
-                    onMouseEnter={() => {
-                      setHoveredState(st);
-                      setSelectedState(st);
-                    }}
-                    onMouseLeave={() => setHoveredState(null)}
-                    style={{ left: `${st.x}%`, top: `${st.y}%` }}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 focus:outline-none cursor-pointer group"
-                    id={`map-node-${st.id}`}
-                  >
-                    {/* Ring highlight scale pulse */}
-                    {isActive ? (
-                      <span className="absolute -inset-4 rounded-full bg-brand-orange/20 animate-ping z-0 pointer-events-none" />
-                    ) : (
-                      <span className="absolute -inset-2 rounded-full bg-white/5 group-hover:bg-brand-orange/10 transition-colors z-0 pointer-events-none" />
-                    )}
-
-                    {/* Glowing core dot indicator */}
-                    <div className={`relative z-10 w-3 h-3 sm:w-4 sm:h-4 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
-                      isActive 
-                        ? 'bg-brand-orange border-white shadow-lg shadow-brand-orange/50 scale-125' 
-                        : 'bg-slate-800 border-brand-orange/60 group-hover:bg-brand-orange group-hover:border-white'
-                    }`}>
-                      <div className="w-1 h-1 rounded-full bg-white" />
-                    </div>
-
-                    {/* Compact floating state label badge on hover or active */}
-                    <div className={`absolute left-1/2 -translate-x-1/2 -bottom-7 pr-3 transition-all duration-300 z-20 pointer-events-none bg-slate-900 text-white border border-white/10 px-2 py-0.5 rounded text-[10px] font-mono whitespace-nowrap shadow-md ${
-                      isActive ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-1 scale-95 group-hover:opacity-100 group-hover:translate-y-0 text-gray-300'
-                    }`}>
-                      {st.name} ({st.dealers} D)
-                    </div>
-                  </button>
-                );
-              })}
-              
-              {/* Map instructions subtitle indicator */}
-              <div className="absolute top-4 right-4 z-20 pointer-events-none drop-shadow">
-                <span className="px-2 py-1 bg-black/40 border border-white/15 rounded-md font-mono text-[10px] tracking-widest uppercase text-brand-orange">
-                  Interactive Dashboard
-                </span>
-              </div>
-            </div>
-
-          </div>
-
+          {/* Subtle overlay border for premium styling */}
+          <div className="absolute inset-0 pointer-events-none border border-black/5 rounded-3xl z-20" />
         </div>
+
       </div>
     </section>
   );

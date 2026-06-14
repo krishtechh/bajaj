@@ -158,7 +158,7 @@ export default function Footer({ onScrollTo, onSelectCategory }: FooterProps) {
           </div>
 
           {/* RIGHT COLUMN: HIGH-CONTRAST INQUIRY RFQ FORM */}
-          <div className="lg:col-span-7">
+          {/* <div className="lg:col-span-7">
             <div className="p-8 sm:p-10 rounded-[2rem] bg-white/[0.02] border border-white/15 backdrop-blur-md relative overflow-hidden" id="rfq-form-holder">
               
               <AnimatePresence mode="wait">
@@ -281,7 +281,7 @@ export default function Footer({ onScrollTo, onSelectCategory }: FooterProps) {
               </AnimatePresence>
 
             </div>
-          </div>
+          </div> */}
 
         </div>
 
