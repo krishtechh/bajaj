@@ -318,7 +318,7 @@ export default function Footer({ onScrollTo, onSelectCategory }: FooterProps) {
           </div>
 
           {/* Newsletter subscription panel */}
-          <div className="md:col-span-4 flex flex-col text-left">
+          {/* <div className="md:col-span-4 flex flex-col text-left">
             <h4 className="font-heading font-bold text-xs uppercase tracking-wider text-white mb-3">Industrial dispatch news</h4>
             <p className="font-sans font-light text-xs text-gray-500 leading-relaxed mb-4">
               Receive notifications regarding newly commissioned polymers, adhesive chemical batches, and global shipping index estimates.
@@ -349,7 +349,7 @@ export default function Footer({ onScrollTo, onSelectCategory }: FooterProps) {
                 </button>
               </form>
             )}
-          </div>
+          </div> */}
 
         </div>
 

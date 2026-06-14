@@ -15,7 +15,7 @@ export default function Navbar({ onScrollTo, activeSection, selectedCategoryId, 
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -41,8 +41,8 @@ export default function Navbar({ onScrollTo, activeSection, selectedCategoryId, 
         transition={{ duration: 0.5, ease: 'easeOut' }}
         className={`fixed top-0 left-0 w-full z-50 transition-[background-color,border-color,box-shadow,padding] duration-300 py-1.5 sm:py-3.5 ${
           isScrolled 
-            ? 'bg-white/75 backdrop-blur-lg shadow-sm border-b border-gray-200/50' 
-            : 'bg-white/95 backdrop-blur-md'
+            ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-200/50' 
+            : 'bg-transparent border-b border-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

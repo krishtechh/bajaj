@@ -45,10 +45,6 @@ export default function Businesses() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="industries-masonry">
           
           {industriesData.map((industry, index) => {
-            // Let's create visual variety (asymmetry) by making the 1st (Packaging) and 5th (Automotive) cards span larger
-            // This is exactly a Masonry-inspired layout with responsive structures!
-            const isSpanned = index === 0 || index === 4;
-
             return (
               <motion.div
                 key={industry.id}
@@ -56,11 +52,7 @@ export default function Businesses() {
                 whileInView={{ opacity: 1, x: 0, y: 0 }}
                 viewport={{ once: false, margin: "-50px" }}
                 transition={{ duration: 0.8, type: "spring", bounce: 0.4, delay: (index % 4) * 0.15 }}
-                className={`relative group rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-brand-navy/30 border border-gray-100 flex flex-col justify-between transition-shadow duration-300 bg-white ${
-                  isSpanned 
-                    ? 'col-span-1 md:col-span-2' 
-                    : 'col-span-1'
-                }`}
+                className="relative group rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-brand-navy/30 border border-gray-100 flex flex-col justify-between transition-shadow duration-300 bg-white col-span-1"
                 style={{
                   transformStyle: 'preserve-3d',
                   perspective: 1000

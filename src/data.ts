@@ -2,6 +2,8 @@ import { Shield, Target, Award, Users, Settings, Zap, MapPin } from 'lucide-reac
 import vacmetLogo from '../assets/Vacmet Logo png.png';
 import siegwerkLogo from '../assets/Siegwerk_Group_logo.svg';
 import pidiliteLogo from '../assets/Pidilite_logo.svg.png';
+import puneetImage from '../assets/puneet.jpeg';
+import harishImage from '../assets/harish.jpeg';
 
 export interface Stat {
   label: string;
@@ -99,10 +101,10 @@ export const categoriesData: Category[] = [
 
 export const distributorsData: Distributor[] = [
   {
-    id: "Vacmet India Limited",
-    name: "Vacmet India Limited",
-    logo: vacmetLogo,
-    description: "Vacmet India Limited is one of the world's leading producers of flexible packaging films and metalized paper & board headquartered in India. Catering to customers in more than 70 countries, Vacmet today is one of the most trusted partners for some of the world’s largest packaging manufacturers and FMCG brands in their journey towards sustainable packaging.",
+    id: "Pidilite",
+    name: "Pidilite",
+    logo: pidiliteLogo,
+    description: "Pidilite is one of India’s leading manufacturers of adhesives, sealants, construction chemicals, and art materials, trusted by millions across households and industries worldwide. With iconic brands like Fevicol, Dr. Fixit, Fevikwik, and M-Seal, Pidilite has established a strong global presence by delivering innovative and sustainable solutions across more than 100 countries.",
   },
   {
     id: "Siegwerk",
@@ -111,96 +113,60 @@ export const distributorsData: Distributor[] = [
     description: "Siegwerk is one of the leading global providers of printing inks and coatings for packaging applications and labels. As a family-owned company in its seventh generation, we rely on almost 200 years of expertise and knowledge in printing today.",
   },
   {
-    id: "Pidilite",
-    name: "Pidilite",
-    logo: pidiliteLogo,
-    description: "Pidilite is one of India’s leading manufacturers of adhesives, sealants, construction chemicals, and art materials, trusted by millions across households and industries worldwide. With iconic brands like Fevicol, Dr. Fixit, Fevikwik, and M-Seal, Pidilite has established a strong global presence by delivering innovative and sustainable solutions across more than 100 countries.",
-  }
+    id: "Vacmet India Limited",
+    name: "Vacmet India Limited",
+    logo: vacmetLogo,
+    description: "Vacmet India Limited is one of the world's leading producers of flexible packaging films and metalized paper & board headquartered in India. Catering to customers in more than 70 countries, Vacmet today is one of the most trusted partners for some of the world’s largest packaging manufacturers and FMCG brands in their journey towards sustainable packaging.",
+  },
 ];
 
 export const industriesData: Industry[] = [
   {
-    id: "packaging",
-    title: "Packaging & Corrugation",
-    description: "Supplying top-grade BOPP/PET lamination films and quick-grab adhesives for premium cartons, luxury cosmetics, and durable shipping containers.",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800",
+    id: "paper-packaging",
+    title: "Paper Packaging & Converting Industry",
+    description: "Supplying high-performance water-based adhesives, hot melts, and premium lamination films for carton manufacturing, paper bags, and advanced paper converting operations.",
+    image: "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&q=80&w=800",
     accent: "from-amber-500 to-orange-600"
   },
   {
-    id: "printing",
-    title: "Printing & Publishing",
-    description: "Specialized thermal films and high-fidelity industrial inks providing superior protection, scuff resistance, and vibrant clarity for magazines and books.",
+    id: "printing-publishing",
+    title: "Printing & Publishing Industry",
+    description: "Specialized thermal and wet lamination films, overprint varnishes, and industrial inks offering outstanding scuff resistance and vibrant clarity for books, magazines, and commercial prints.",
     image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=800",
     accent: "from-blue-600 to-indigo-800"
   },
   {
-    id: "furniture",
-    title: "Woodworking & Furniture",
-    description: "Industrial water-based D3/D4 PVA adhesives and heavy duty hot melts ensuring seamless membrane pressing, post-forming, and high-strength plywood bonds.",
-    image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=800",
-    accent: "from-zinc-500 to-zinc-700"
+    id: "hologram-tapes-label",
+    title: "Hologram, Tapes & Label Industry",
+    description: "Providing specialized acrylic emulsions, hot melt pressure-sensitive adhesives (PSA), and premium base films for security holograms, industrial adhesive tapes, and product labelling.",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800",
+    accent: "from-purple-500 to-indigo-700"
   },
   {
-    id: "textile",
-    title: "Textile & Apparel",
-    description: "Durable hotmelt adhesives for seamless apparel design, elastic ribbons, embroidery stabilization, and specialty pigment binders for industrial printing.",
-    image: "https://images.unsplash.com/photo-1558191053-c03db2757e3d?auto=format&fit=crop&q=80&w=800",
-    accent: "from-teal-500 to-emerald-700"
-  },
-  {
-    id: "automotive",
-    title: "Automotive Assembly",
-    description: "High-performance hot melt solutions for interiors, roof linings, door trims, and acoustic insulation bonding adhering to the strictest thermal thresholds.",
-    image: "https://images.unsplash.com/photo-1508974239320-0a029497e820?auto=format&fit=crop&q=80&w=800",
-    accent: "from-slate-600 to-slate-900"
-  },
-  {
-    id: "construction",
-    title: "Construction Materials",
-    description: "PVA emulsion coatings and heavy-bonding adhesives optimized for concrete admixture formulation, plasterboards, acoustic panels, and wood flooring.",
-    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=800",
-    accent: "from-orange-500 to-red-700"
-  },
-  {
-    id: "fmcg",
-    title: "FMCG Labelling & Box Sealing",
-    description: "Ultra-fast drying label adhesives and food-safe cartoning hot melts designed to keep up with hyper-speed automation production lines.",
-    image: "https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&q=80&w=800",
+    id: "corrugation-allied",
+    title: "Corrugation and Allied Industries",
+    description: "High-strength, quick-tack starch additives, water-based adhesives, and robust reinforcing materials engineered for high-speed automatic corrugating lines and heavy-duty shipping containers.",
+    image: "https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&q=80&w=800",
     accent: "from-orange-600 to-amber-700"
-  },
-  {
-    id: "electronics",
-    title: "Consumer Electronics",
-    description: "Non-conductive flame retardant hot melts and coatings protecting internal circuit boards, wire routing, and micro-speakers from vibrational strain.",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800",
-    accent: "from-cyan-600 to-brand-navy"
   }
 ];
 
 export const leadersData: Leader[] = [
   {
     id: "leader-1",
-    name: "Shri. Surendra Bajaj",
-    designation: "Founder & Executive Chairman",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400",
-    quote: "Engineering bonds that last goes beyond chemical formulas; it requires building unshakeable trust with our partners and continuous technical foresight.",
-    bio: "With over three decades of pioneering leadership in industrial polymer chemistry, Shri. Surendra Bajaj founded Bajaj International with the core ideal of making India self-reliant in advanced lamination films and bonding technologies."
+    name: "Puneet Bajaj",
+    designation: "Founder, Bajaj International",
+    image: puneetImage,
+    quote: "Success has never been measured solely by business growth, but by the trust earned along the way.",
+    bio: "Through his leadership and commitment to excellence, he has cultivated a company that stands for quality, reliability, and long-term partnerships, making Bajaj International a trusted name in the industry."
   },
   {
     id: "leader-2",
-    name: "Dr. Vikram Aditya Bajaj",
-    designation: "Managing Director & CEO",
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=400",
-    quote: "By aligning robotic automation, eco-safe polymers, and hyper-local supply chains, we are driving Bajaj International into a digital-first industrial future.",
-    bio: "Dr. Vikram Bajaj holds a PhD in Materials Science from Imperial College London. He oversees global technology acquisitions, our state-of-the-art research centers in Pune, and our green energy transition across corporate operations."
-  },
-  {
-    id: "leader-3",
-    name: "Ananya Bajaj Mehta",
-    designation: "Chief of Distribution & Global Alliances",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400",
-    quote: "Our distribution channel isn't just a transport system; it is a live network of technology ambassadors solving manufacturer pain points on the ground daily.",
-    bio: "Ananya holds an MBA from Cornell University. She has successfully scaled the Bajaj authorized dealer count to over 500, setting up dedicated real-time telemetry logistics hubs and state-level storage modules across India."
+    name: "Harish Kukreja",
+    designation: "Co-Founder, Bajaj International",
+    image: harishImage,
+    quote: "Dedication to excellence and operational precision plays a key role in delivering the reliability and consistency that customers trust.",
+    bio: "Harish Kukreja oversees the operational backbone of Bajaj International, ensuring smooth execution, efficient processes, and dependable service."
   }
 ];
 

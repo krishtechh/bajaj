@@ -138,9 +138,9 @@ export default function Leadership() {
 
                   {/* Operational details card inside portrait */}
                   <div className="absolute bottom-6 left-6 right-6 z-20 text-left">
-                    <span className="text-[10px] uppercase font-mono font-bold tracking-widest text-brand-orange bg-amber-500/10 px-2 py-0.5 rounded border border-brand-orange/20 inline-block mb-1.5 backdrop-blur-sm">
+                    {/* <span className="text-[10px] uppercase font-mono font-bold tracking-widest text-brand-orange bg-amber-500/10 px-2 py-0.5 rounded border border-brand-orange/20 inline-block mb-1.5 backdrop-blur-sm">
                       MEMBER EXECUTIVE BOARD
-                    </span>
+                    </span> */}
                     <h4 className="font-heading font-extrabold text-lg text-white">
                       {leader.name}
                     </h4>

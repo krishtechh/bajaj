@@ -55,11 +55,11 @@ export default function Categories({ onSelectCategory }: CategoriesProps) {
                   <div className="flex-1 text-left flex flex-col justify-between h-full py-2">
                     <div>
                       {/* Product Formulation Tag */}
-                      <span className={`font-mono text-xs sm:text-[13px] font-bold tracking-widest uppercase mb-3 block ${
+                      {/* <span className={`font-mono text-xs sm:text-[13px] font-bold tracking-widest uppercase mb-3 block ${
                         isOrangeCard ? 'text-slate-950 font-extrabold' : 'text-brand-orange'
                       }`}>
                         Formulation Group 0{idx + 1}
-                      </span>
+                      </span> */}
                       {/* Title */}
                       <h3 className={`font-heading font-extrabold text-2xl sm:text-3xl lg:text-3.5xl mb-4 tracking-tight leading-tight ${
                         isOrangeCard ? 'text-slate-950' : 'text-white'
