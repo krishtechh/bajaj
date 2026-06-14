@@ -1,4 +1,7 @@
 import { Shield, Target, Award, Users, Settings, Zap, MapPin } from 'lucide-react';
+import vacmetLogo from '../assets/Vacmet Logo png.png';
+import siegwerkLogo from '../assets/Siegwerk_Group_logo.svg';
+import pidiliteLogo from '../assets/Pidilite_logo.svg.png';
 
 export interface Stat {
   label: string;
@@ -18,13 +21,7 @@ export interface Distributor {
   id: string;
   name: string;
   logo: string;
-  region: string;
   description: string;
-  stats: {
-    dealers: string;
-    capacity: string;
-    coverage: string;
-  };
 }
 
 export interface Industry {
@@ -102,40 +99,22 @@ export const categoriesData: Category[] = [
 
 export const distributorsData: Distributor[] = [
   {
-    id: "dist-north",
-    name: "Apex Industrial Supply Corp",
-    logo: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&q=80&w=300",
-    region: "North & Central India",
-    description: "Apex Industrial is a premier channel partner overseeing advanced warehousing, technical consultation, and inventory stocking across the entire northern territory, delivering critical bonding compounds in 12-hour turnaround windows.",
-    stats: {
-      dealers: "185+ Dealers Associated",
-      capacity: "450 Metric Tons Stored",
-      coverage: "Delhi NCR, UP, Haryana, Punjab, MP"
-    }
+    id: "Vacmet India Limited",
+    name: "Vacmet India Limited",
+    logo: vacmetLogo,
+    description: "Vacmet India Limited is one of the world's leading producers of flexible packaging films and metalized paper & board headquartered in India. Catering to customers in more than 70 countries, Vacmet today is one of the most trusted partners for some of the world’s largest packaging manufacturers and FMCG brands in their journey towards sustainable packaging.",
   },
   {
-    id: "dist-west",
-    name: "Sterling Core Bonding Distributors",
-    logo: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=300",
-    region: "Western Industrial Hub",
-    description: "Sterling Core serves the powerhouse manufacturing zones of Maharashtra and Gujarat, offering customized temperature-controlled storage and bulk tankers logistics for high-volume lamination, automotive, and packaging plants.",
-    stats: {
-      dealers: "220+ Dealers Associated",
-      capacity: "700 Metric Tons Stored",
-      coverage: "Maharashtra, Gujarat, Rajasthan, Goa"
-    }
+    id: "Siegwerk",
+    name: "Siegwerk",
+    logo: siegwerkLogo,
+    description: "Siegwerk is one of the leading global providers of printing inks and coatings for packaging applications and labels. As a family-owned company in its seventh generation, we rely on almost 200 years of expertise and knowledge in printing today.",
   },
   {
-    id: "dist-south",
-    name: "Vanguard Polymer Partners Ltd",
-    logo: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=300",
-    region: "Southern Corridor",
-    description: "Vanguard Polymer partners directly with Electronics, Textile, and Automotive manufacturers across southern IT corridors and ports, securing precision distribution, technical field response labs, and custom formulation batches.",
-    stats: {
-      dealers: "140+ Dealers Associated",
-      capacity: "350 Metric Tons Stored",
-      coverage: "Tamil Nadu, Karnataka, AP, Kerala"
-    }
+    id: "Pidilite",
+    name: "Pidilite",
+    logo: pidiliteLogo,
+    description: "Pidilite is one of India’s leading manufacturers of adhesives, sealants, construction chemicals, and art materials, trusted by millions across households and industries worldwide. With iconic brands like Fevicol, Dr. Fixit, Fevikwik, and M-Seal, Pidilite has established a strong global presence by delivering innovative and sustainable solutions across more than 100 countries.",
   }
 ];
 

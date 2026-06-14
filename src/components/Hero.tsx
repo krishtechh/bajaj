@@ -7,7 +7,7 @@ interface HeroProps {
 
 export default function Hero({ onScrollTo }: HeroProps) {
   // Stagger wrapper settings for nice scroll entrance
-  const containerVariants = {
+  const containerVariants: any = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -17,7 +17,7 @@ export default function Hero({ onScrollTo }: HeroProps) {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: any = {
     hidden: { y: 40, opacity: 0 },
     visible: { 
       y: 0, 

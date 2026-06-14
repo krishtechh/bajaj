@@ -1,8 +1,15 @@
-import { motion } from 'motion/react';
+import { useRef } from 'react';
+import { motion, useScroll } from 'motion/react';
 import { MapPin, Warehouse, Users, ArrowUpRight, Award, Waypoints } from 'lucide-react';
 import { distributorsData } from '../data';
 
 export default function Distribution() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start center", "end center"]
+  });
+
   return (
     <section
       id="distribution"
@@ -28,7 +35,17 @@ export default function Distribution() {
         </div>
 
         {/* Alternating Channels Layout Grid */}
-        <div className="flex flex-col space-y-16 lg:space-y-24 relative" id="distributions-track">
+        <div ref={containerRef} className="flex flex-col space-y-16 lg:space-y-24 relative" id="distributions-track">
+
+          {/* Timeline Background Line */}
+          <div className="hidden lg:block absolute top-12 bottom-12 left-1/2 -translate-x-1/2 w-[2px] bg-slate-200 pointer-events-none z-0" />
+          
+          {/* Timeline Scroll Progress Line */}
+          <motion.div 
+            className="hidden lg:block absolute top-12 bottom-12 left-1/2 -translate-x-1/2 w-[2px] bg-gradient-to-b from-brand-navy to-brand-orange shadow-[0_0_12px_rgba(249,115,22,0.8)] pointer-events-none z-0 origin-top"
+            style={{ scaleY: scrollYProgress }}
+          />
+
 
           {distributorsData.map((distributor, idx) => {
             const isLogoLeft = idx % 2 === 0;
@@ -40,15 +57,12 @@ export default function Distribution() {
                 key={distributor.id}
                 initial={{ opacity: 0, x: idx % 2 === 0 ? -120 : 120, y: 15 }}
                 whileInView={{ opacity: 1, x: 0, y: 0 }}
-                viewport={{ once: true, margin: "-120px" }}
+                viewport={{ once: false, margin: "-120px" }}
                 transition={{ duration: 0.85, type: "spring", stiffness: 50, damping: 15 }}
                 className={`grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center p-8 sm:p-12 rounded-[2rem] border border-gray-100 relative ${idx % 2 === 0 ? 'bg-slate-50/50' : 'bg-white'
                   }`}
               >
-                {/* Visual Connector Node indicating current channel */}
-                <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white border-4 border-brand-orange justify-center items-center pointer-events-none shadow" style={{ top: '50%', transform: 'translate(-50%, -50%)' }}>
-                  <Waypoints className="w-3.5 h-3.5 text-brand-orange" />
-                </div>
+
 
                 {/* Left Placement: Logo / Visual Image */}
                 <div className={`col-span-1 lg:col-span-5 ${isLogoLeft ? 'lg:order-1' : 'lg:order-2'}`}>
@@ -56,19 +70,21 @@ export default function Distribution() {
                     {/* Glowing Accent Ring */}
                     <div className="absolute inset-0 border-2 border-transparent group-hover:border-brand-orange/40 transition-colors duration-500 rounded-2xl z-20 pointer-events-none" />
 
-                    {/* Desaturated Industrial Image */}
-                    <img
-                      src={distributor.logo}
-                      alt={distributor.name}
-                      className="w-full h-64 object-cover filter brightness-90 contrast-110 grayscale group-hover:grayscale-0 transition-all duration-700 ease-out"
-                      referrerPolicy="no-referrer"
-                    />
+                    {/* Company Logo Image */}
+                    <div className="w-full h-64 bg-white flex items-center justify-center p-8">
+                      <img
+                        src={distributor.logo}
+                        alt={distributor.name}
+                        className="max-w-full max-h-full object-contain transition-transform duration-700 ease-out group-hover:scale-105"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
 
                     {/* Regional overlay ribbon */}
-                    <div className="absolute bottom-4 left-4 z-20 px-3 py-1 bg-brand-navy border border-white/10 text-white rounded-lg flex items-center space-x-1.5 shadow-md">
+                    {/* <div className="absolute bottom-4 left-4 z-20 px-3 py-1 bg-brand-navy border border-white/10 text-white rounded-lg flex items-center space-x-1.5 shadow-md">
                       <MapPin className="w-4 h-4 text-brand-orange" />
                       <span className="font-heading font-bold text-xs tracking-wide">{distributor.region}</span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
@@ -76,10 +92,10 @@ export default function Distribution() {
                 <div className={`col-span-1 lg:col-span-7 flex flex-col items-start ${isLogoLeft ? 'lg:order-2' : 'lg:order-1'}`}>
 
                   {/* Strategic Partner Indicator */}
-                  <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-slate-100 border border-gray-200 text-xs text-slate-500 font-mono mb-4">
+                  {/* <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-slate-100 border border-gray-200 text-xs text-slate-500 font-mono mb-4">
                     <Award className="w-4 h-4 text-brand-orange" />
                     <span>AUTHORIZED PREMIER HUB {idx + 1}</span>
-                  </div>
+                  </div> */}
 
                   <h3 className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-navy mb-4 tracking-tight">
                     {distributor.name}
@@ -90,7 +106,7 @@ export default function Distribution() {
                   </p>
 
                   {/* Operational statistics nested grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full mb-8 pt-6 border-t border-gray-100" id={`dist-stats-${distributor.id}`}>
+                  {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full mb-8 pt-6 border-t border-gray-100" id={`dist-stats-${distributor.id}`}>
                     <div className="flex items-start space-x-2">
                       <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center text-brand-orange flex-shrink-0">
                         <Users className="w-4 h-4" />
@@ -120,7 +136,7 @@ export default function Distribution() {
                         <span className="font-sans text-[11px] text-gray-500">{distributor.stats.coverage}</span>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Connect now CTA button */}
                   {/* <button

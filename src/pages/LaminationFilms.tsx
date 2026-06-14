@@ -276,7 +276,7 @@ export default function LaminationFilms({ onBack, onScrollTo }: LaminationFilmsP
                           {Object.entries(product.specs).map(([key, value]) => (
                             <div key={key} className="flex justify-between border-b border-gray-150 pb-1.5 last:border-b-0 last:pb-0">
                               <span className="font-sans text-xs text-gray-500 capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
-                              <span className="font-sans text-xs font-semibold text-brand-navy">{value}</span>
+                              <span className="font-sans text-xs font-semibold text-brand-navy">{String(value)}</span>
                             </div>
                           ))}
                         </div>

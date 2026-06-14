@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Menu, X, ChevronRight, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface NavbarProps {
@@ -9,18 +9,9 @@ interface NavbarProps {
   setSelectedCategoryId: (categoryId: string | null) => void;
 }
 
-const categoryItems = [
-  { id: 'lamination', label: 'Lamination Films' },
-  { id: 'adhesives', label: 'Water-Based Adhesives' },
-  { id: 'hotmelt', label: 'Hot Melt Solutions' },
-  { id: 'industrial-ink', label: 'Industrial Inks' }
-];
-
 export default function Navbar({ onScrollTo, activeSection, selectedCategoryId, setSelectedCategoryId }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDropdownHovered, setIsDropdownHovered] = useState(false);
-  const [isMobileSubMenuOpen, setIsMobileSubMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,14 +22,14 @@ export default function Navbar({ onScrollTo, activeSection, selectedCategoryId, 
   }, []);
 
   const navLinks = [
-    { id: 'about', label: 'About' },
-    { id: 'categories', label: 'Categories' },
-    { id: 'distribution', label: 'Distribution' },
-    { id: 'businesses', label: 'Industries' },
-    { id: 'leadership', label: 'Leadership' },
-    { id: 'network', label: 'Network' },
-    { id: 'gallery', label: 'Gallery' },
-    { id: 'contact', label: 'Contact' }
+    { id: 'about', label: 'About', type: 'section' },
+    { id: 'distribution', label: 'Distribution', type: 'section' },
+    { id: 'businesses', label: 'Industries', type: 'section' },
+    { id: 'network', label: 'Network', type: 'section' },
+    { id: 'adhesives', label: 'Water-Based Adhesives', type: 'category' },
+    { id: 'hotmelt', label: 'Hot Melt Solutions', type: 'category' },
+    { id: 'industrial-ink', label: 'Industrial Inks', type: 'category' },
+    { id: 'lamination', label: 'Lamination Films', type: 'category' }
   ];
 
   return (
@@ -48,14 +39,14 @@ export default function Navbar({ onScrollTo, activeSection, selectedCategoryId, 
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 py-3 sm:py-3.5 ${
           isScrolled 
-            ? 'bg-white shadow-md py-3 border-b border-gray-100' 
-            : 'bg-white/80 backdrop-blur-md py-5'
+            ? 'bg-white/70 backdrop-blur-lg shadow-sm border-b border-gray-200/50' 
+            : 'bg-white/95 backdrop-blur-md'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-14">
             {/* Logo area */}
             <div 
               className="flex items-center space-x-3 cursor-pointer group"
@@ -65,109 +56,74 @@ export default function Navbar({ onScrollTo, activeSection, selectedCategoryId, 
               <img 
                 src="/images/logo.png" 
                 alt="Bajaj International Logo" 
-                className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]" 
+                className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]" 
                 referrerPolicy="no-referrer"
               />
             </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-1">
-              {navLinks.map((link) => {
-                const isActive = (selectedCategoryId && link.id === 'categories') || (!selectedCategoryId && activeSection === link.id);
-                
-                if (link.id === 'categories') {
-                  return (
-                    <div
-                      key={link.id}
-                      className="relative py-2"
-                      onMouseEnter={() => setIsDropdownHovered(true)}
-                      onMouseLeave={() => setIsDropdownHovered(false)}
-                    >
+            {/* Desktop Navigation - Right Aligned */}
+            <div className="hidden lg:flex items-center space-x-1 xl:space-x-2">
+              {navLinks.map((link, index) => {
+                const isFirstCategory = link.type === 'category' && index > 0 && navLinks[index - 1].type !== 'category';
+
+                return (
+                  <React.Fragment key={link.id}>
+                    {isFirstCategory && (
+                      <div className="flex items-center mx-2 xl:mx-4">
+                        <div className="h-5 w-[1px] bg-gray-300/80 rounded-full" />
+                      </div>
+                    )}
+                    
+                    {link.type === 'category' ? (
                       <button
-                        onClick={() => onScrollTo('categories')}
-                        className={`relative px-3.5 py-1 font-sans font-medium text-sm transition-colors duration-300 cursor-pointer flex items-center gap-1 ${
-                          isActive ? 'text-brand-orange' : 'text-gray-700 hover:text-brand-navy'
+                        onClick={() => {
+                          setSelectedCategoryId(link.id);
+                          window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+                        }}
+                        className={`relative px-2 xl:px-3 py-2 font-sans text-[10px] xl:text-xs uppercase tracking-wider transition-colors duration-300 cursor-pointer ${
+                          selectedCategoryId === link.id ? 'text-brand-orange font-bold' : 'text-slate-500 hover:text-brand-navy font-semibold'
                         }`}
-                        id={`navlink-${link.id}`}
                       >
-                        <span>{link.label}</span>
-                        <ChevronDown className="w-3.5 h-3.5" />
-                        {isActive && (
+                        {link.label}
+                        {selectedCategoryId === link.id && (
                           <motion.div
                             layoutId="activeUnderline"
-                            className="absolute bottom-0 left-3.5 right-3.5 h-[2px] bg-brand-orange"
+                            className="absolute bottom-0 left-2 right-2 h-[2px] bg-brand-orange"
                             transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                           />
                         )}
                       </button>
-
-                      <AnimatePresence>
-                        {isDropdownHovered && (
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setSelectedCategoryId(null);
+                          onScrollTo(link.id);
+                        }}
+                        className={`relative px-2 xl:px-3 py-2 font-sans text-sm transition-colors duration-300 cursor-pointer ${
+                          !selectedCategoryId && activeSection === link.id ? 'text-brand-navy font-bold' : 'text-gray-700 hover:text-brand-orange font-medium'
+                        }`}
+                        id={`navlink-${link.id}`}
+                      >
+                        {link.label}
+                        {!selectedCategoryId && activeSection === link.id && (
                           <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            transition={{ duration: 0.2 }}
-                            className="absolute left-1/2 -translate-x-1/2 mt-2 w-56 rounded-2xl bg-white border border-gray-100 shadow-2xl py-2 z-50 text-left"
-                          >
-                            {categoryItems.map((item) => (
-                              <button
-                                key={item.id}
-                                onClick={() => {
-                                  setSelectedCategoryId(item.id);
-                                  window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-                                  setIsDropdownHovered(false);
-                                }}
-                                className="block w-full text-left px-5 py-3 font-sans font-semibold text-xs text-gray-700 hover:bg-slate-50 hover:text-brand-orange transition-colors cursor-pointer"
-                              >
-                                {item.label}
-                              </button>
-                            ))}
-                          </motion.div>
+                            layoutId="activeUnderline"
+                            className="absolute bottom-0 left-2 right-2 h-[2px] bg-brand-navy"
+                            transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                          />
                         )}
-                      </AnimatePresence>
-                    </div>
-                  );
-                }
-
-                return (
-                  <button
-                    key={link.id}
-                    onClick={() => onScrollTo(link.id)}
-                    className={`relative px-3.5 py-2 font-sans font-medium text-sm transition-colors duration-300 cursor-pointer ${
-                      isActive ? 'text-brand-orange' : 'text-gray-700 hover:text-brand-navy'
-                    }`}
-                    id={`navlink-${link.id}`}
-                  >
-                    {link.label}
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeUnderline"
-                        className="absolute bottom-0 left-3.5 right-3.5 h-[2px] bg-brand-orange"
-                        transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                      />
+                      </button>
                     )}
-                  </button>
+                  </React.Fragment>
                 );
               })}
-            </div>
-
-            {/* Desktop CTA */}
-            <div className="hidden lg:block">
-              <button
-                onClick={() => onScrollTo('contact')}
-                id="cta-navbar-contact"
-                className="inline-flex items-center justify-center px-6 py-2.5 bg-brand-navy text-white text-xs font-bold uppercase tracking-widest rounded-full hover:bg-brand-orange hover:scale-105 active:scale-95 transition-all duration-300 hover:shadow-lg hover:shadow-brand-orange/20 cursor-pointer text-center"
-              >
-                <span>Contact Us</span>
-              </button>
             </div>
 
             {/* Mobile Hamburger toggle */}
             <div className="flex lg:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="inline-flex items-center justify-center p-2 rounded-lg text-gray-500 hover:text-brand-navy hover:bg-gray-100 focus:outline-none transition-colors"
+                className="inline-flex items-center justify-center p-2 rounded-lg text-gray-500 hover:text-brand-navy hover:bg-gray-100 focus:outline-none transition-colors cursor-pointer"
                 aria-label="Toggle menu"
                 id="mobile-menu-toggle"
               >
@@ -185,104 +141,62 @@ export default function Navbar({ onScrollTo, activeSection, selectedCategoryId, 
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="lg:hidden bg-white border-b border-gray-200 overflow-hidden"
+              className="lg:hidden bg-white/95 backdrop-blur-md border-b border-gray-200 overflow-hidden"
               id="mobile-drawer"
             >
-              <div className="px-4 pt-2 pb-6 space-y-1 sm:px-6">
-                {navLinks.map((link) => {
-                  const isActive = (selectedCategoryId && link.id === 'categories') || (!selectedCategoryId && activeSection === link.id);
-                  
-                  if (link.id === 'categories') {
-                    return (
-                      <div key={link.id} className="space-y-1">
+              <div className="px-4 pt-4 pb-6 space-y-1 sm:px-6">
+                {navLinks.map((link, index) => {
+                  const isFirstCategory = link.type === 'category' && index > 0 && navLinks[index - 1].type !== 'category';
+
+                  return (
+                    <React.Fragment key={link.id}>
+                      {isFirstCategory && (
+                        <div className="py-2 px-4">
+                          <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Products</div>
+                        </div>
+                      )}
+
+                      {link.type === 'category' ? (
                         <button
-                          onClick={() => setIsMobileSubMenuOpen(!isMobileSubMenuOpen)}
-                          className={`flex items-center justify-between w-full text-left px-4 py-3 rounded-lg font-sans font-medium text-base transition-all duration-200 ${
-                            isActive
-                              ? 'bg-amber-50 text-brand-orange border-l-4 border-brand-orange pl-3'
-                              : 'text-gray-700 hover:bg-gray-50 hover:text-brand-navy pl-4'
+                          onClick={() => {
+                            setIsMobileMenuOpen(false);
+                            setSelectedCategoryId(link.id);
+                            window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+                          }}
+                          className={`block w-full text-left px-4 py-3 font-sans text-xs uppercase tracking-wider transition-all duration-200 ${
+                            selectedCategoryId === link.id
+                              ? 'bg-amber-50 text-brand-orange font-bold border-l-4 border-brand-orange pl-3'
+                              : 'text-slate-500 hover:bg-gray-50 hover:text-brand-navy font-semibold pl-4'
                           }`}
                           id={`mobile-navlink-${link.id}`}
                         >
-                          <span>{link.label}</span>
-                          <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isMobileSubMenuOpen ? 'rotate-180' : ''}`} />
+                          {link.label}
                         </button>
-                        <AnimatePresence>
-                          {isMobileSubMenuOpen && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              exit={{ opacity: 0, height: 0 }}
-                              className="pl-6 space-y-1 overflow-hidden"
-                            >
-                              <button
-                                onClick={() => {
-                                  setIsMobileMenuOpen(false);
-                                  setIsMobileSubMenuOpen(false);
-                                  onScrollTo('categories');
-                                }}
-                                className="block w-full text-left px-4 py-2 text-xs font-semibold text-gray-500 hover:text-brand-navy transition-colors cursor-pointer"
-                              >
-                                View All Categories
-                              </button>
-                              {categoryItems.map((item) => (
-                                <button
-                                  key={item.id}
-                                  onClick={() => {
-                                    setIsMobileMenuOpen(false);
-                                    setIsMobileSubMenuOpen(false);
-                                    setSelectedCategoryId(item.id);
-                                    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-                                  }}
-                                  className={`block w-full text-left px-4 py-2.5 rounded-md font-sans text-sm font-medium transition-colors cursor-pointer ${
-                                    selectedCategoryId === item.id 
-                                      ? 'text-brand-orange bg-amber-50/50' 
-                                      : 'text-gray-600 hover:text-brand-orange hover:bg-gray-50'
-                                  }`}
-                                >
-                                  {item.label}
-                                </button>
-                              ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <button
-                      key={link.id}
-                      onClick={() => {
-                        setIsMobileMenuOpen(false);
-                        onScrollTo(link.id);
-                      }}
-                      className={`block w-full text-left px-4 py-3 rounded-lg font-sans font-medium text-base transition-all duration-200 ${
-                        isActive
-                          ? 'bg-amber-50 text-brand-orange border-l-4 border-brand-orange pl-3'
-                          : 'text-gray-700 hover:bg-gray-50 hover:text-brand-navy pl-4'
-                      }`}
-                      id={`mobile-navlink-${link.id}`}
-                    >
-                      {link.label}
-                    </button>
+                      ) : (
+                        <button
+                          onClick={() => {
+                            setIsMobileMenuOpen(false);
+                            setSelectedCategoryId(null);
+                            onScrollTo(link.id);
+                          }}
+                          className={`block w-full text-left px-4 py-3 font-sans font-medium text-base transition-all duration-200 ${
+                            !selectedCategoryId && activeSection === link.id
+                              ? 'bg-slate-50 text-brand-navy font-bold border-l-4 border-brand-navy pl-3'
+                              : 'text-gray-700 hover:bg-gray-50 hover:text-brand-orange pl-4'
+                          }`}
+                          id={`mobile-navlink-${link.id}`}
+                        >
+                          {link.label}
+                        </button>
+                      )}
+                    </React.Fragment>
                   );
                 })}
-                <div className="pt-4 px-4">
-                  <button
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      onScrollTo('contact');
-                    }}
-                    className="flex w-full items-center justify-center px-4 py-3 rounded-xl bg-brand-navy text-white text-base font-semibold hover:bg-brand-orange transition-colors shadow-sm"
-                  >
-                    Contact Us
-                  </button>
-                </div>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
+
       </motion.nav>
     </>
   );

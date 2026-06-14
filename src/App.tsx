@@ -140,41 +140,37 @@ export default function App() {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: 'easeInOut' }}
-            className="fixed inset-0 z-50 bg-slate-950 flex flex-col justify-center items-center p-6 text-white text-center"
+            className="fixed inset-0 z-50 bg-[radial-gradient(circle_at_center,_var(--color-brand-navy)_0%,_#0a1f40_100%)] flex flex-col justify-center items-center p-6 text-white text-center"
             id="global-preloader"
           >
-            {/* Glowing background circles inside preloader */}
-            <div className="absolute w-80 h-80 bg-brand-orange/15 rounded-full blur-[80px]" />
-            <div className="absolute w-[400px] h-[400px] bg-brand-navy/20 rounded-full blur-[120px] bottom-12" />
-
-            <div className="relative z-10 max-w-sm flex flex-col items-center">
-              {/* Spinner icon */}
-              <div className="mb-8 relative w-20 h-20 flex items-center justify-center">
-                {/* Rotating outermost line */}
-                <span className="absolute inset-0 border-t-2 border-brand-orange rounded-full animate-spin duration-3000" />
-                {/* Core globe outline representation */}
-                <svg className="w-10 h-10 text-white animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <circle cx="12" cy="12" r="10" />
-                  <ellipse cx="12" cy="12" rx="10" ry="4" stroke="rgba(255,255,255,0.4)" />
-                  <ellipse cx="12" cy="12" rx="4" ry="10" stroke="rgba(255,255,255,0.4)" />
-                </svg>
-              </div>
-
-              {/* Company banner */}
-              <h1 className="font-heading font-extrabold text-2xl tracking-tight text-white mb-2 leading-none uppercase">
-                BAJAJ <span className="font-mono text-[13px] font-medium tracking-widest text-brand-grey block mt-1">INTERNATIONAL</span>
+            <div className="relative z-10 max-w-4xl flex flex-col items-center">
+              {/* Company banner with staggered slide-up mask animation */}
+              <h1 className="font-display font-bold text-2xl sm:text-4xl md:text-5xl lg:text-6xl tracking-[0.15em] text-white mb-6 uppercase text-center select-none leading-none flex flex-wrap justify-center">
+                {"BAJAJ INTERNATIONAL".split(" ").map((word, wordIndex) => (
+                  <span key={wordIndex} className="inline-block overflow-hidden py-1 px-2">
+                    <motion.span
+                      initial={{ y: "120%", opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{
+                        duration: 1.0,
+                        ease: [0.16, 1, 0.3, 1], // premium custom cubic-bezier (easeOutExpo)
+                        delay: wordIndex * 0.15
+                      }}
+                      className="inline-block"
+                    >
+                      {word}
+                    </motion.span>
+                  </span>
+                ))}
               </h1>
-              <p className="font-sans font-light text-xs text-gray-500 max-w-[200px] leading-relaxed mb-6">
-                Bonding Polymers & Industrial Lamination Media
-              </p>
 
               {/* Loader progress strip bar */}
-              <div className="w-48 h-[2px] bg-white/10 rounded-full overflow-hidden">
+              <div className="w-48 sm:w-64 md:w-80 h-[3px] bg-white/15 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}
-                  transition={{ duration: 1.5, ease: 'easeOut' }}
-                  className="h-full bg-brand-orange"
+                  transition={{ duration: 1.6, ease: 'easeInOut' }}
+                  className="h-full bg-brand-orange shadow-[0_0_10px_rgba(245,163,0,0.8)]"
                 />
               </div>
             </div>
@@ -185,12 +181,14 @@ export default function App() {
       {/* MAIN SITE LAYOUT FLOW */}
       <div className="flex flex-col min-h-screen">
         {/* 1. Header Navbar navigation bar */}
-        <Navbar 
-          onScrollTo={handleScrollTo} 
-          activeSection={selectedCategoryId ? '' : activeSection} 
-          selectedCategoryId={selectedCategoryId}
-          setSelectedCategoryId={setSelectedCategoryId}
-        />
+        {!isLoading && (
+          <Navbar 
+            onScrollTo={handleScrollTo} 
+            activeSection={selectedCategoryId ? '' : activeSection} 
+            selectedCategoryId={selectedCategoryId}
+            setSelectedCategoryId={setSelectedCategoryId}
+          />
+        )}
 
         {/* 2. Structured Section Modules as requested */}
         <main className="flex-1">
