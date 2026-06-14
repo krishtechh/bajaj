@@ -71,28 +71,28 @@ export const categoriesData: Category[] = [
     id: "lamination",
     title: "Lamination Films",
     description: "Premium high-barrier and thermal lamination films designed for luxury packaging, books, flexible containers, and heavy-duty industrial printing safeguards.",
-    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=600",
+    image: "/images/products/bopp-film-glossy.png",
     features: ["BOPP & PET options", "Ultra-high gloss & deep matte", "Excellent thermal bond strength"]
   },
   {
     id: "adhesives",
     title: "Water-Based Adhesives",
     description: "Eco-friendly, high-solid adhesives custom-engineered for heavy packaging, cardboard laminations, woodworking, paper processing, and precision labeling.",
-    image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=600",
+    image: "/images/products/lamination-adhesive.png",
     features: ["Zero VOC emission", "Fast drying speed", "Exceptional grab and shear"]
   },
   {
     id: "hotmelt",
     title: "Hot Melt Solutions",
     description: "State-of-the-art thermoplastic adhesives providing rapid-setting bonds for automated cartoning, booklet gluing, spine binding, case sealing, and product assemblies.",
-    image: "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&q=80&w=600",
+    image: "/images/products/book-binding-melt.png",
     features: ["Superior thermal stability", "Extrusion and nozzle grades", "Bonding of non-porous surfaces"]
   },
   {
     id: "industrial-ink",
     title: "Industrial Ink & Coatings",
     description: "Advanced printing inks formulated for continuous inkjet printers, flexible packaging, rotogravure, flexography, and UV-curable industrial product marking.",
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=600",
+    image: "/images/products/water-based-ink.png",
     features: ["High rub and solvent resistance", "Vibrant pigmentation", "Fast curing on high-speed lines"]
   }
 ];

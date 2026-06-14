@@ -33,7 +33,7 @@ export default function IndustrialInks({ onBack, onScrollTo }: IndustrialInksPro
       name: "Offset Ink",
       type: "High-Resolution Lithographic Sheetfed Ink",
       category: "offset",
-      image: "https://images.unsplash.com/photo-1562654501-a0ccc0fc3fb1?auto=format&fit=crop&q=80&w=800",
+      image: "/images/products/offset-ink.png",
       specs: { solventBase: "Vegetable Oil / Resin Emulsion", viscosity: "Paste structure", dryingMechanism: "Oxidative Polymerization", tackRange: "9 - 12 (Tackmeter @ 32°C)", glossRating: "High gloss (>60%)" },
       description: "Offset Ink is a high-quality printing ink specially formulated for offset printing applications, delivering sharp image reproduction, excellent color consistency, and smooth printing performance. It is widely used for commercial printing and packaging applications requiring high-resolution and professional print results.",
       applications: ["Commercial Printing", "Brochures & Catalogs", "Magazines & Books", "Packaging Materials", "Labels & Stickers", "Promotional Materials", "Newspaper Printing"]
