@@ -98,10 +98,22 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   const getElementOffset = useCallback(
     (element: HTMLElement) => {
       if (useWindowScroll) {
-        const rect = element.getBoundingClientRect();
-        return rect.top + window.scrollY;
+        let top = 0;
+        let curr: HTMLElement | null = element;
+        while (curr) {
+          top += curr.offsetTop;
+          curr = curr.offsetParent as HTMLElement | null;
+        }
+        return top;
       } else {
-        return element.offsetTop;
+        let top = 0;
+        let curr: HTMLElement | null = element;
+        const scroller = scrollerRef.current;
+        while (curr && curr !== scroller) {
+          top += curr.offsetTop;
+          curr = curr.offsetParent as HTMLElement | null;
+        }
+        return top;
       }
     },
     [useWindowScroll]
@@ -137,14 +149,6 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
 
-      // On mobile view (width <= 768px), disable programmatic stack translation
-      // to prevent scroll jitter/shaking and improve usability.
-      if (window.innerWidth <= 768) {
-        card.style.transform = 'none';
-        card.style.filter = 'none';
-        return;
-      }
-
       const cardTop = cardOffsetsRef.current[i] ?? getElementOffset(card);
       const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
       const triggerEnd = cardTop - scaleEndPositionPx;
@@ -177,7 +181,6 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
 
       let translateY = 0;
       const isPinned = scrollTop >= pinStart && scrollTop <= pinEnd;
-
       if (isPinned) {
         translateY = scrollTop - cardTop + stackPositionPx + itemStackDistance * i;
       } else if (scrollTop > pinEnd) {
@@ -245,14 +248,14 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   const setupLenis = useCallback(() => {
     if (useWindowScroll) {
       const lenis = new Lenis({
-        duration: 1.0,
+        duration: 1.2,
         easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
-        touchMultiplier: 1.2,
+        touchMultiplier: 2,
         infinite: false,
         wheelMultiplier: 1,
         lerp: 0.1,
-        syncTouch: false, // Don't hijack mobile native scrolling!
+        syncTouch: true,
         syncTouchLerp: 0.075
       });
 
@@ -273,16 +276,16 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       const lenis = new Lenis({
         wrapper: scroller,
         content: scroller.querySelector('.scroll-stack-inner') as HTMLElement,
-        duration: 1.0,
+        duration: 1.2,
         easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
-        touchMultiplier: 1.2,
+        touchMultiplier: 2,
         infinite: false,
         normalizeWheel: true,
         wheelMultiplier: 1,
         touchInertiaMultiplier: 35,
         lerp: 0.1,
-        syncTouch: false, // Don't hijack mobile native scrolling!
+        syncTouch: true,
         syncTouchLerp: 0.075,
         touchInertia: 0.6
       } as any);
@@ -309,30 +312,29 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     cardsRef.current = cards;
     const transformsCache = lastTransformsRef.current;
 
-    cards.forEach((card, i) => {
-      if (i < cards.length - 1) {
-        card.style.marginBottom = `${itemDistance}px`;
-      }
-      if (window.innerWidth > 768) {
+    const applyLayoutStyles = () => {
+      cards.forEach((card, i) => {
+        if (i < cards.length - 1) {
+          card.style.marginBottom = `${itemDistance}px`;
+        }
         card.style.willChange = 'transform, filter';
         card.style.transformOrigin = 'top center';
         card.style.backfaceVisibility = 'hidden';
-        card.style.transform = 'translateZ(0)';
-        (card.style as any).webkitTransform = 'translateZ(0)';
         card.style.perspective = '1000px';
         (card.style as any).webkitPerspective = '1000px';
-      } else {
-        card.style.willChange = 'auto';
-        card.style.transform = 'none';
-        card.style.filter = 'none';
-      }
-    });
+        card.style.zIndex = String(i + 1);
+        card.style.position = 'relative';
+        card.style.top = 'auto';
+      });
+    };
 
+    applyLayoutStyles();
     setupLenis();
     measureOffsets(); // Cache initial offsets once mounted
     updateCardTransforms();
 
     const handleResizeOrLoad = () => {
+      applyLayoutStyles();
       measureOffsets();
       updateCardTransforms();
     };
@@ -368,7 +370,8 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     onStackComplete,
     setupLenis,
     measureOffsets,
-    updateCardTransforms
+    updateCardTransforms,
+    parsePercentage
   ]);
 
   return (

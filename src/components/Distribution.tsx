@@ -38,11 +38,11 @@ export default function Distribution() {
         <div ref={containerRef} className="flex flex-col space-y-16 lg:space-y-24 relative" id="distributions-track">
 
           {/* Timeline Background Line */}
-          <div className="hidden lg:block absolute top-12 bottom-12 left-1/2 -translate-x-1/2 w-[2px] bg-slate-200 pointer-events-none z-0" />
+          <div className="absolute top-12 bottom-12 left-1/2 -translate-x-1/2 w-[2px] bg-slate-200 pointer-events-none z-0" />
           
           {/* Timeline Scroll Progress Line */}
           <motion.div 
-            className="hidden lg:block absolute top-12 bottom-12 left-1/2 -translate-x-1/2 w-[2px] bg-gradient-to-b from-brand-navy to-brand-orange shadow-[0_0_12px_rgba(249,115,22,0.8)] pointer-events-none z-0 origin-top"
+            className="absolute top-12 bottom-12 left-1/2 -translate-x-1/2 w-[2px] bg-gradient-to-b from-brand-navy to-brand-orange shadow-[0_0_12px_rgba(249,115,22,0.8)] pointer-events-none z-0 origin-top"
             style={{ scaleY: scrollYProgress }}
           />
 

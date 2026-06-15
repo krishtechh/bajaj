@@ -1,32 +1,16 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import FadeIn from './FadeIn';
 import AnimatedHeading from './AnimatedHeading';
+import bgPhoto from '../../assets/bg_photo2.png';
 
 export default function Hero({ onScrollTo }: { onScrollTo?: (id: string) => void }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = true;
-      videoRef.current.defaultMuted = true;
-      videoRef.current.play().catch(err => {
-        console.log("Autoplay was prevented:", err);
-      });
-    }
-  }, []);
-
   return (
     <section id="hero" className="relative w-full h-screen bg-black overflow-hidden flex flex-col font-sans">
-      {/* Background Video */}
-      <video
-        ref={videoRef}
-        autoPlay
-        loop
-        muted
-        playsInline
-        webkit-playsinline="true"
+      {/* Background Image */}
+      <img
+        src={bgPhoto}
+        alt="Bajaj International Background"
         className="absolute inset-0 w-full h-full object-cover z-0 opacity-55 pointer-events-none"
-        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260403_050628_c4e32401-fab4-4a27-b7a8-6e9291cd5959.mp4"
       />
 
       {/* Hero Content Overlay */}
