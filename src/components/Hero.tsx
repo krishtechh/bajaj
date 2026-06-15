@@ -1,7 +1,7 @@
 import React from 'react';
 import FadeIn from './FadeIn';
 import AnimatedHeading from './AnimatedHeading';
-import bgPhoto from '../../assets/bg_photo2.png';
+import bgPhoto from '../../assets/bg_photo3.png';
 
 export default function Hero({ onScrollTo }: { onScrollTo?: (id: string) => void }) {
   return (

@@ -7,9 +7,30 @@ export default function Leadership() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const autoPlayTimer = useRef<NodeJS.Timeout | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
-    if (isPlaying) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { threshold: 0.15 } // trigger when 15% of the section is visible
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isPlaying && isInView) {
       autoPlayTimer.current = setInterval(() => {
         handleNext();
       }, 7000); // 7 seconds slide intervals
@@ -20,7 +41,7 @@ export default function Leadership() {
     return () => {
       if (autoPlayTimer.current) clearInterval(autoPlayTimer.current);
     };
-  }, [isPlaying, currentSlide]);
+  }, [isPlaying, isInView, currentSlide]);
 
   const handlePrev = () => {
     setCurrentSlide((prev) => (prev === 0 ? leadersData.length - 1 : prev - 1));
@@ -36,6 +57,7 @@ export default function Leadership() {
   return (
     <section 
       id="leadership" 
+      ref={sectionRef}
       className="py-24 sm:py-32 bg-slate-950 text-white relative overflow-hidden"
     >
       {/* Huge faded background display text based on current active leader */}

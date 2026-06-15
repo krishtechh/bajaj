@@ -137,22 +137,22 @@ export default function IndiaMap() {
 
         {/* 1. Centered Global Stats Number Boxes at the top */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12" id="global-stats-grid">
-          <div className="p-5 rounded-2xl bg-white border border-gray-200 text-center shadow-sm">
+          <div className="p-5 rounded-2xl bg-white border border-gray-200 flex flex-col items-center justify-center text-center shadow-sm">
             <span className="font-mono text-[10px] text-brand-orange uppercase tracking-widest block mb-2 font-bold">Global Presence</span>
             <span className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-navy block">3 Continents</span>
             <span className="font-sans text-[11px] text-slate-500 mt-1 block">Asia, Middle East & Africa</span>
           </div>
-          <div className="p-5 rounded-2xl bg-white border border-gray-200 text-center shadow-sm">
+          <div className="p-5 rounded-2xl bg-white border border-gray-200 flex flex-col items-center justify-center text-center shadow-sm">
             <span className="font-mono text-[10px] text-brand-orange uppercase tracking-widest block mb-2 font-bold">National Reach</span>
             <span className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-navy block">All 28 States</span>
             <span className="font-sans text-[11px] text-slate-500 mt-1 block">Pan-India Connectivity</span>
           </div>
-          <div className="p-5 rounded-2xl bg-white border border-gray-200 text-center shadow-sm">
+          <div className="p-5 rounded-2xl bg-white border border-gray-200 flex flex-col items-center justify-center text-center shadow-sm">
             <span className="font-mono text-[10px] text-brand-orange uppercase tracking-widest block mb-2 font-bold">Central Hub</span>
             <span className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-navy block">New Delhi</span>
             <span className="font-sans text-[11px] text-slate-500 mt-1 block">Direct Routing to All Hubs</span>
           </div>
-          <div className="p-5 rounded-2xl bg-white border border-gray-200 text-center bg-gradient-to-br from-brand-orange/5 to-transparent shadow-sm">
+          <div className="p-5 rounded-2xl bg-white border border-gray-200 flex flex-col items-center justify-center text-center bg-gradient-to-br from-brand-orange/5 to-transparent shadow-sm">
             <span className="font-mono text-[10px] text-brand-orange uppercase tracking-widest block mb-2 font-bold">Logistics Strength</span>
             <span className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-orange block">500+ Dealers</span>
             <span className="font-sans text-[11px] text-slate-500 mt-1 block">Active Distributorships</span>
