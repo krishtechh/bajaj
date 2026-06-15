@@ -39,14 +39,14 @@ export default function Navbar({ onScrollTo, activeSection, selectedCategoryId, 
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
-        className={`fixed top-0 left-0 w-full z-50 transition-[background-color,border-color,box-shadow,padding] duration-300 py-1.5 sm:py-3.5 ${
+        className={`fixed top-0 left-0 w-full z-50 transition-[background-color,border-color,box-shadow,padding] duration-300 py-1 sm:py-2 ${
           isScrolled 
             ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-200/50' 
             : 'bg-transparent border-b border-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-11 sm:h-14">
+          <div className="flex items-center justify-between h-14 sm:h-18">
             {/* Logo area */}
             <div 
               className="flex items-center space-x-3 cursor-pointer group"
@@ -56,7 +56,7 @@ export default function Navbar({ onScrollTo, activeSection, selectedCategoryId, 
               <img 
                 src="/images/logo.png" 
                 alt="Bajaj International Logo" 
-                className="h-8 sm:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]" 
+                className="h-11 sm:h-15 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]" 
                 referrerPolicy="no-referrer"
               />
             </div>

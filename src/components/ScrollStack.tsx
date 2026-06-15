@@ -137,6 +137,14 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
 
+      // On mobile view (width <= 768px), disable programmatic stack translation
+      // to prevent scroll jitter/shaking and improve usability.
+      if (window.innerWidth <= 768) {
+        card.style.transform = 'none';
+        card.style.filter = 'none';
+        return;
+      }
+
       const cardTop = cardOffsetsRef.current[i] ?? getElementOffset(card);
       const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
       const triggerEnd = cardTop - scaleEndPositionPx;
@@ -305,13 +313,19 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       if (i < cards.length - 1) {
         card.style.marginBottom = `${itemDistance}px`;
       }
-      card.style.willChange = 'transform, filter';
-      card.style.transformOrigin = 'top center';
-      card.style.backfaceVisibility = 'hidden';
-      card.style.transform = 'translateZ(0)';
-      (card.style as any).webkitTransform = 'translateZ(0)';
-      card.style.perspective = '1000px';
-      (card.style as any).webkitPerspective = '1000px';
+      if (window.innerWidth > 768) {
+        card.style.willChange = 'transform, filter';
+        card.style.transformOrigin = 'top center';
+        card.style.backfaceVisibility = 'hidden';
+        card.style.transform = 'translateZ(0)';
+        (card.style as any).webkitTransform = 'translateZ(0)';
+        card.style.perspective = '1000px';
+        (card.style as any).webkitPerspective = '1000px';
+      } else {
+        card.style.willChange = 'auto';
+        card.style.transform = 'none';
+        card.style.filter = 'none';
+      }
     });
 
     setupLenis();
