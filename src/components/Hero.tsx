@@ -6,7 +6,6 @@ import bgPhoto from '../../assets/bg_photo3.png';
 export default function Hero({ onScrollTo }: { onScrollTo?: (id: string) => void }) {
   return (
     <section id="hero" className="relative w-full h-screen bg-black overflow-hidden flex flex-col font-sans">
-      {/* Background Image */}
       <img
         src={bgPhoto}
         alt="Bajaj International Background"
