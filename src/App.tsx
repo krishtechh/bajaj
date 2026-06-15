@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useLenis } from './components/SmoothScroll';
 
 // Import our custom premium components
 import Navbar from './components/Navbar';
@@ -12,6 +13,7 @@ import Leadership from './components/Leadership';
 import IndiaMap from './components/IndiaMap';
 // import Gallery from './components/Gallery';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 // Import our 4 newly created category pages
 import LaminationFilms from './pages/LaminationFilms';
@@ -22,6 +24,7 @@ import IndustrialInks from './pages/IndustrialInks';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 export default function App() {
+  const { lenis } = useLenis();
   const [isLoading, setIsLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('hero');
   
@@ -110,22 +113,31 @@ export default function App() {
     
     // We wait for the DOM to render the home sections before scrolling
     setTimeout(() => {
-      const targetElement = document.getElementById(sectionId);
-      if (targetElement) {
-        // Offset by navbar height (approx 80px)
-        const offset = 76;
-        const elementPosition = targetElement.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
+      if (lenis) {
+        const targetElement = document.getElementById(sectionId);
+        if (targetElement) {
+          lenis.scrollTo(targetElement, { offset: -76, duration: 1.2 });
+        } else {
+          lenis.scrollTo(0, { duration: 1.2 });
+        }
       } else {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
+        const targetElement = document.getElementById(sectionId);
+        if (targetElement) {
+          // Offset by navbar height (approx 80px)
+          const offset = 76;
+          const elementPosition = targetElement.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        } else {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        }
       }
     }, 120);
   };
@@ -279,6 +291,7 @@ export default function App() {
         {/* 3. Inquiry Form & Footer contact details */}
         <Footer onScrollTo={handleScrollTo} onSelectCategory={(id) => setSelectedCategoryId(id)} />
       </div>
+      <ScrollToTop />
     </div>
   );
 }

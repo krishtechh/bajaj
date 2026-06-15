@@ -34,7 +34,7 @@ export default function Hero({ onScrollTo }: { onScrollTo?: (id: string) => void
 
           <AnimatedHeading
             text={"Industrial Excellence\nAcross India"}
-            className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 uppercase tracking-tight text-center flex flex-col items-center"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 uppercase tracking-tight text-center flex flex-col items-center"
           />
 
           <FadeIn delay={800} duration={1000} className="text-base md:text-lg text-gray-200 mb-8 max-w-xl font-light mx-auto text-center">
