@@ -106,11 +106,11 @@ export default function Footer({ onScrollTo, onSelectCategory }: FooterProps) {
                 </div>
                 <div>
                   <h4 className="font-heading font-bold text-sm text-white">Technical RFQ Desks</h4>
-                  <a href="mailto:rfq@bajajinternational.com" className="font-mono text-xs sm:text-sm text-brand-orange hover:underline block mt-1">
-                    rfq@bajajinternational.com
+                  <a href="mailto:info@thebajajinternational.com" className="font-mono text-xs sm:text-sm text-gray-400  hover:underline block mt-1">
+                    info@thebajajinternational.com
                   </a>
-                  <a href="mailto:alliances@bajajinternational.com" className="font-mono text-xs sm:text-sm text-gray-400 hover:underline block">
-                    alliances@bajajinternational.com
+                  <a href="mailto:bajajinternational2007@gmail.com" className="font-mono text-xs sm:text-sm text-gray-400 hover:underline block">
+                    bajajinternational2007@gmail.com
                   </a>
                 </div>
               </div>
