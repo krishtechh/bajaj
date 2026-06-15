@@ -152,9 +152,6 @@ export default function LaminationFilms({ onBack, onScrollTo }: LaminationFilmsP
 
         {/* HERO TITLE SECTION */}
         <div className="text-left max-w-3xl mb-16">
-          <span className="px-3 py-1.5 rounded-md bg-amber-50 border border-brand-orange/20 text-brand-orange text-xs font-mono font-bold tracking-wider uppercase mb-4 inline-block">
-            Industrial Media Category
-          </span>
           <h1 className="font-heading font-extrabold text-4xl sm:text-5.5xl text-brand-navy uppercase tracking-tight leading-none mb-6">
             Lamination <span className="text-brand-orange">Films</span>
           </h1>
@@ -191,7 +188,7 @@ export default function LaminationFilms({ onBack, onScrollTo }: LaminationFilmsP
         </div>
 
         {/* SUB-PRODUCTS DISPLAY */}
-        <div className="mb-24">
+        <div className="mb-24 max-w-5xl mx-auto">
           
           {/* Main Content: Products list */}
           <div className="space-y-12">
@@ -229,9 +226,6 @@ export default function LaminationFilms({ onBack, onScrollTo }: LaminationFilmsP
                       />
                       <span className="absolute top-4 right-5 z-20 font-mono text-5xl font-black text-white/20 drop-shadow-lg">
                         0{pIdx + 1}
-                      </span>
-                      <span className="absolute top-4 left-4 z-20 px-2.5 py-1 text-[10px] font-mono font-bold tracking-wider bg-black/40 backdrop-blur-md text-brand-orange uppercase rounded-md border border-brand-orange/30">
-                        {product.type}
                       </span>
                     </div>
 
